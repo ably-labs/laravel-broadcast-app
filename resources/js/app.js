@@ -30,8 +30,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
     created() {
-        Echo.private('notification')
-            .listen('MessageNotification', (e) => {
+        Echo.channel('notification')
+            .listen('*', (e) => {
                 alert('Welp, this showed up without a refresh!')
             });
     }

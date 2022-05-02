@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Events\MessageNotification;
+use App\Events\MessageNotification as MessageNotification;
 
 /*
 |--------------------------------------------------------------------------

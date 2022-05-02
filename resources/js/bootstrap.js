@@ -32,3 +32,15 @@ window.Echo = new Echo({
     disableStats: false,
     encrypted: true,
 });
+
+window.Echo.connector.pusher.connection.bind('connected', () => {
+    console.log('connected');
+});
+
+window.Echo.connector.pusher.connection.bind('disconnected', () => {
+    console.log('disconnected');
+});
+
+window.Echo.connector.pusher.connection.bind("error",  () => {
+    console.error(error);
+});
