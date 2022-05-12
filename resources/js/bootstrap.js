@@ -26,7 +26,7 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: '',
+    key: '', // Use API key instead of full key
     wsHost: 'realtime-pusher.ably.io',
     wsPort: 443,
     disableStats: false,

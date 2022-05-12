@@ -31,8 +31,8 @@ const app = new Vue({
     el: '#app',
     created() {
         Echo.channel('notification')
-            .listen('*', (e) => {
-                alert('Welp, this showed up without a refresh!')
+            .listen('MessageNotification', (data) => {
+                console.log("Received a message for event ::  MessageNotification, data is ::" + JSON.stringify(data));
             });
     }
 });
