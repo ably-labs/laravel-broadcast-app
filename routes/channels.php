@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('notification', function () {
+Broadcast::channel('notification', function ($user) {
     return true;
 });
