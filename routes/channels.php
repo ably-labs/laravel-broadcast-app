@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('notification', function ($user) {
     return true;
 });
+
+Broadcast::channel('room', function ($user) { // for presence channel return data about user -> https://laravel.com/docs/9.x/broadcasting#authorizing-presence-channels
+    return ['id' => $user->id, 'name' => $user->name];
+});

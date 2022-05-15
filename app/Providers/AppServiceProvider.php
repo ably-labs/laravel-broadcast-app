@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         //create dummy user to support subscribing to private channels
         if (config('app.env') === 'local') {
             $user = \App\Models\User::newModelInstance([
+                'id' => 23443,
                 'name' => 'OtherTestUser',
                 'email' => 'othertest@example.com',
                 'password' => Hash::make('secretpass'),

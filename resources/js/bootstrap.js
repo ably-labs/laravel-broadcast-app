@@ -34,15 +34,15 @@ window.Echo = new Echo({
 });
 
 window.Echo.connector.pusher.connection.bind('connected', () => {
-    console.log('connected');
+    console.log('connected to ably via pusher-js');
 });
 
 window.Echo.connector.pusher.connection.bind('disconnected', () => {
-    console.log('disconnected');
+    console.log('disconnected from ably');
 });
 
-window.Echo.connector.pusher.connection.bind("error",  () => {
-    console.error(error);
+window.Echo.connector.pusher.connection.bind("error",  (err) => {
+    console.error('connection error', err);
 });
 
 window.Echo.connector.pusher.bind_global((eventName, data)=> {

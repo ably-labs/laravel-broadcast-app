@@ -34,22 +34,43 @@ const app = new Vue({
             .subscribed(()=> {
                 console.log("Subscribed to public channel notification")
             })
-            .error((err)=> {
-                console.error(err)
-            })
             .listenToAll((eventName, data) => {
                 console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
+            })
+            .error((err)=> {
+                console.error(err)
             });
 
         Echo.private('notification')
             .subscribed(()=> {
                 console.log("Subscribed to private channel notification");
             })
+            .listenToAll((eventName, data) => {
+                console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
+            })
             .error((err)=> {
                 console.error(err)
+            });
+
+        Echo.join('room')
+            .subscribed(()=> {
+                console.log("Subscribed to presence channel room");
+            })
+            .here((members) => {
+                console.log("Total members are " + JSON.stringify(members));
+            })
+            .joining((info) => {
+                console.log(info, "joined channel")
+            })
+            .leaving((info) => {
+                console.log(info, "left channel")
             })
             .listenToAll((eventName, data) => {
                 console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
-            });
+            })
+            .error((err)=> {
+                console.error(err)
+            })
+
     }
 });
