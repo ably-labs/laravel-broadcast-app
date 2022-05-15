@@ -31,8 +31,25 @@ const app = new Vue({
     el: '#app',
     created() {
         Echo.channel('notification')
-            .listen('MessageNotification', (data) => {
-                console.log("Received a message for event ::  MessageNotification, data is ::" + JSON.stringify(data));
+            .subscribed(()=> {
+                console.log("Subscribed to public channel notification")
+            })
+            .error((err)=> {
+                console.error(err)
+            })
+            .listenToAll((eventName, data) => {
+                console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
+            });
+
+        Echo.private('notification')
+            .subscribed(()=> {
+                console.log("Subscribed to private channel notification");
+            })
+            .error((err)=> {
+                console.error(err)
+            })
+            .listenToAll((eventName, data) => {
+                console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
             });
     }
 });
