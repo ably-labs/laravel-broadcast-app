@@ -26,7 +26,7 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: '', // Use API key instead of full key
+    key: '', // Use first part of the API key before : (colon)
     wsHost: 'realtime-pusher.ably.io',
     wsPort: 443,
     disableStats: false,
@@ -43,4 +43,8 @@ window.Echo.connector.pusher.connection.bind('disconnected', () => {
 
 window.Echo.connector.pusher.connection.bind("error",  () => {
     console.error(error);
+});
+
+window.Echo.connector.pusher.bind_global((eventName, data)=> {
+    console.log("Global eventName :: " + eventName + " data :: " + JSON.stringify(data));
 });
