@@ -1,7 +1,8 @@
 <?php
 
+use App\Events\PrivateMessageNotification;
+use App\Events\PublicMessageNotification;
 use Illuminate\Support\Facades\Route;
-use App\Events\MessageNotification as MessageNotification;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,8 +19,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/event', function () {
-    return event(new MessageNotification('This is our first broadcast message!'));
+Route::get('/public-event', function () {
+    return event(new PublicMessageNotification('This is our first broadcast message!'));
+});
+
+Route::get('/private-event', function () {
+    return event(new PrivateMessageNotification('This is our first broadcast message!'));
 });
 
 Route::get('/listen', function () {
