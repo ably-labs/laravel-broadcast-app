@@ -30,6 +30,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 const app = new Vue({
     el: '#app',
     created() {
+
+        // subscription to public, private and presence channels
         Echo.channel('notification')
             .subscribed(()=> {
                 console.log("Subscribed to public channel notification")
@@ -72,5 +74,31 @@ const app = new Vue({
                 console.error(err)
             })
 
+        // subscribe to whisper and listen
+        Echo.private(`chat1`)
+            .subscribed(()=> {
+                console.log("Subscribed to public channel chat1 for listen whisper")
+            })
+            .error((err)=> {
+                console.error(err)
+            })
+            .listenToAll((eventName, data) => {
+                console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
+            })
+            .listenForWhisper('typing', (e) => {
+                console.log(e.name);
+            });
+
+        // triggering client events via channels
+        Echo.private(`chat1`)
+            .subscribed(()=> {
+                console.log("Subscribed to public channel chat1 for publish whisper")
+            })
+            .error((err)=> {
+                console.error(err)
+            })
+            .whisper('typing', {
+                name: 'sac'
+            });
     }
 });
