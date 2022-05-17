@@ -77,7 +77,7 @@ const app = new Vue({
         // subscribe to whisper and listen
         Echo.private(`chat1`)
             .subscribed(()=> {
-                console.log("Subscribed to public channel chat1 for listen whisper")
+                console.log("Subscribed to public channel chat1 for listening to client event")
             })
             .error((err)=> {
                 console.error(err)
@@ -92,7 +92,7 @@ const app = new Vue({
         // triggering client events via channels
         Echo.private(`chat1`)
             .subscribed(()=> {
-                console.log("Subscribed to public channel chat1 for publish whisper")
+                console.log("Subscribed to public channel chat1 for sending client event via whisper")
             })
             .error((err)=> {
                 console.error(err)
