@@ -40,10 +40,10 @@ return [
                 'useTLS' => true,
             ],
         ],
-
         'ably' => [
             'driver' => 'ably',
             'key' => env('ABLY_KEY'),
+            'pusher_adapter' => env('ABLY_PUSHER_ADAPTER', false)
         ],
 
         'redis' => [

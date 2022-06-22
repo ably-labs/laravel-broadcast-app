@@ -22,29 +22,13 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import Echo from 'laravel-echo';
 
-window.Pusher = require('pusher-js');
-
 window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: '', // Use first part of the API key before : (colon)
-    wsHost: 'realtime-pusher.ably.io',
-    wsPort: 443,
-    disableStats: false,
-    encrypted: true,
+    broadcaster: 'ably',
 });
 
-window.Echo.connector.pusher.connection.bind('connected', () => {
-    console.log('connected to ably via pusher-js');
-});
-
-window.Echo.connector.pusher.connection.bind('disconnected', () => {
-    console.log('disconnected from ably');
-});
-
-window.Echo.connector.pusher.connection.bind("error",  (err) => {
-    console.error('connection error', err);
-});
-
-window.Echo.connector.pusher.bind_global((eventName, data)=> {
-    console.log("Global eventName :: " + eventName + " data :: " + JSON.stringify(data));
+window.Echo.connector.ably.connection.on((stateChange) => {
+    console.log("LOGGER:: Connection event :: ", stateChange);
+    if (stateChange.current === 'disconnected' && stateChange.reason?.code === 40142) { // key/token status expired
+        console.log("LOGGER:: Connection token expired https://help.ably.io/error/40142");
+    }
 });

@@ -75,30 +75,30 @@ const app = new Vue({
             })
 
         // subscribe to whisper and listen
-        Echo.private(`chat1`)
-            .subscribed(()=> {
-                console.log("Subscribed to public channel chat1 for listening to client event")
-            })
-            .error((err)=> {
-                console.error(err)
-            })
-            .listenToAll((eventName, data) => {
-                console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
-            })
-            .listenForWhisper('typing', (e) => {
-                console.log(e.name);
-            });
-
-        // triggering client events via channels
-        Echo.private(`chat1`)
-            .subscribed(()=> {
-                console.log("Subscribed to public channel chat1 for sending client event via whisper")
-            })
-            .error((err)=> {
-                console.error(err)
-            })
-            .whisper('typing', {
-                name: 'sac'
-            });
+        // Echo.private(`chat1`)
+        //     .subscribed(()=> {
+        //         console.log("Subscribed to public channel chat1 for listening to client event")
+        //     })
+        //     .error((err)=> {
+        //         console.error(err)
+        //     })
+        //     .listenToAll((eventName, data) => {
+        //         console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
+        //     })
+        //     .listenForWhisper('typing', (e) => {
+        //         console.log(e.name);
+        //     });
+        //
+        // // triggering client events via channels
+        // Echo.private(`chat1`)
+        //     .subscribed(()=> {
+        //         console.log("Subscribed to public channel chat1 for sending client event via whisper")
+        //     })
+        //     .error((err)=> {
+        //         console.error(err)
+        //     })
+        //     .whisper('typing', {
+        //         name: 'sac'
+        //     });
     }
 });
