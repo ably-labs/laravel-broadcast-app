@@ -24,7 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "laravel-echo": "^1.11.7",
+        "laravel-echo": "github:sac-fork/echo#ably-connector",
         "pusher-js": "^4.4.0"
     }
 }
