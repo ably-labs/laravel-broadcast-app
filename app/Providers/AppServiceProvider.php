@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,15 +23,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //create dummy user to support subscribing to private channels
-        if (config('app.env') === 'local') {
-            $user = \App\Models\User::newModelInstance([
-                'id' => 23443,
-                'name' => 'daddysac',
-                'email' => 'daddysac@dingdong.com',
-                'password' => Hash::make('secretpass'),
-            ]);
-            Auth::login($user);
-        }
     }
 }
