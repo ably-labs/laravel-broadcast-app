@@ -3,6 +3,7 @@
 use App\Events\PresenceMessageNotification;
 use App\Events\PrivateMessageNotification;
 use App\Events\PublicMessageNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,3 +36,5 @@ Route::get('/presence-event', function () {
 Route::get('/listen', function () {
     return view('listen');
 });
+
+Auth::routes(['reset' => false]);
