@@ -22,6 +22,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import Echo from 'laravel-echo';
 
+window.Ably = require('ably');
+
 window.Echo = new Echo({
     broadcaster: 'ably',
 });
