@@ -30,7 +30,7 @@
                     </div>
                     <input type="text" class="form-control w-100" placeholder="Client name..." v-model="userName" readonly>
                     <input type="text" class="form-control w-100" placeholder="Message..." v-model="message">
-                    <button type="button" class="btn btn-primary">Send message</button>
+                    <button type="button" class="btn btn-primary" @click="sendMessage">Send message</button>
                 </div>
                 <div>
                     <button type="button" class="btn btn-danger">Leave channel</button>
@@ -175,6 +175,24 @@ export default {
                 .error((err)=> {
                     console.error(err)
                 })
+        },
+
+        sendMessage(event) {
+            let userName = this.userName ? this.userName.trim() : null;
+            let message = this.message ? this.message.trim() : null;
+            if(!message || !userName)
+                return;
+
+            let activeChannelIndex = this.getActiveChannelIndex();
+
+            let channel = this.channels[activeChannelIndex];
+            let channelName = channel.channel;
+
+            Echo.private(channelName).whisper('message', {
+                user: userName,
+                message: message
+            });
+            this.message = null;
         },
 
         pushStatusMessage(channel, message) {
