@@ -33,7 +33,7 @@
                     <button type="button" class="btn btn-primary" @click="sendMessage">Send message</button>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-danger">Leave channel</button>
+                    <button type="button" class="btn btn-danger" @click="leaveChannel">Leave channel</button>
                 </div>
 
             </div>
@@ -193,6 +193,23 @@ export default {
                 message: message
             });
             this.message = null;
+        },
+
+        leaveChannel(event) {
+            let activeChannelIndex = this.getActiveChannelIndex();
+
+            let channel = this.channels[activeChannelIndex];
+            let channelName = channel.type + ':' + channel.channel
+            Echo.leaveChannel(channelName);
+
+            this.channels.splice(activeChannelIndex, 1);
+
+            if (this.channels.length) {
+                if (activeChannelIndex === 0) {
+                    this.setActiveChannel(this.channels[0]);
+                } else
+                    this.setActiveChannel(this.channels[activeChannelIndex - 1]);
+            }
         },
 
         pushStatusMessage(channel, message) {
