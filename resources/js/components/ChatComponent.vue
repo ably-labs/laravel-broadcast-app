@@ -43,7 +43,7 @@
 
         <div class="my-2">
             <button class="btn btn-primary" @click="joinPublic">Join public channel</button>
-            <button class="btn btn-primary">Join private channel</button>
+            <button class="btn btn-primary" @click="joinPrivate">Join private channel</button>
         </div>
     </div>
 
@@ -98,6 +98,83 @@ export default {
                     alert("An error occurred while trying to join channel: " + err);
                     console.error(err);
                 });
+        },
+
+        joinPrivate(event) {
+            let channelName = prompt('Enter the private channel name (e.g. chat1, room)');
+            if (!channelName || channelName.trim().length === 0) {
+                return;
+            }
+            channelName = channelName.trim();
+
+            Echo.private(channelName)
+                .subscribed(() => {
+                    let channel = {
+                        type: 'private',
+                        channel: channelName,
+                        messages: []
+                    };
+
+                    this.channels.push(channel);
+                    this.setActiveChannel(channel);
+                    this.pushStatusMessage(channel, "Subscribed to private channel " + channelName);
+                })
+                .listenToAll((eventName, data) => {
+                    let channel = this.getChannelByName(channelName, 'private');
+
+                    console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
+                    if(eventName === '.client-message')
+                        this.pushUserMessage(channel, data.message, data.user);
+                    else
+                        this.pushPublicNotification(channel, data)
+                })
+                .error((err) => {
+                    alert("An error occurred while trying to join channel: " + err);
+                    console.error(err);
+                });
+
+            Echo.join(channelName)
+                .subscribed(()=> {
+                    console.log(channelName, "Subscribed to presence channel " + channelName);
+                })
+                .here((members) => {
+                    let channel = this.getChannelByName(channelName, 'private');
+
+                    if(members.length === 1)
+                        this.pushStatusMessage(channel, "There are no other users in this channel");
+                    else
+                        this.pushStatusMessage(channel, "There are " + members.length + " users in this channel");
+
+                    channel.memberCount = members.length;
+                    console.log("List of members: " + JSON.stringify(members));
+                })
+                .joining((info) => {
+                    let channel = this.getChannelByName(channelName, 'private');
+
+                    if(info.data !== undefined)
+                        this.pushStatusMessage(channel, info.data.name + " joined the channel");
+                    else
+                        this.pushStatusMessage(channel, "User " + info.clientId + " joined the channel");
+
+                    console.log(info, "joined channel")
+                })
+                .leaving((info) => {
+                    let channel = this.getChannelByName(channelName, 'private');
+
+                    if(info.data !== undefined){
+                        this.pushStatusMessage(channel, info.data.name + " left the channel")
+                    }
+                    else
+                        this.pushStatusMessage(channel, "User " + info.clientId + " left the channel")
+
+                    console.log(info, "left channel")
+                })
+                .listenToAll((eventName, data) => {
+                    console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
+                })
+                .error((err)=> {
+                    console.error(err)
+                })
         },
 
         pushStatusMessage(channel, message) {
