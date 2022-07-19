@@ -1,28 +1,43 @@
 <template>
     <div>
-        <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
-            <li v-for="item in items" class="nav-item" role="presentation">
-                <button :class="'nav-link ' + (item.active ? 'active' : '')" :id="'tab-' + item.channel"
-                        data-bs-toggle="tab" :data-bs-target="'#tab-content-' + item.channel" type="button">
-                    {{ item.channel }}
+        <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist" v-if="channels.length">
+            <li v-for="channel in channels" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.channel">
+                <button :class="'nav-link ' + (channel.active ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.channel"
+                        data-bs-toggle="tab" :data-bs-target="'#tab-content-' + channel.type + '-' + channel.channel" type="button"
+                        @click="setActiveChannel(channel)">
+                    {{ channel.channel }} ({{channel.type}})
                 </button>
             </li>
 
         </ul>
-        <div class="tab-content" id="myTabContent">
-            <div v-for="item in items" :class="'tab-pane fade ' + (item.active ? 'show active' : '')"
-                 :id="'tab-content-' + item.channel">
+        <div class="tab-content" id="myTabContent" v-if="channels.length">
+            <div v-for="channel in channels" :class="'tab-pane fade ' + (channel.active ? 'show active' : '')"
+                 :id="'tab-content-' + channel.type + '-' + channel.channel"
+                 :key="'tab-content-' + channel.type + '-' + channel.channel">
                 <div class="messageContainer">
-                    <div v-for="msg in item.messages">
+                    <div v-for="msg in channel.messages">
                         <span v-if="msg.time instanceof Date">[{{ msg.time.toLocaleTimeString() }}]</span>
                         <span v-if="msg.type === 'status'"><i>{{ msg.content }}</i></span>
-                        <span v-else-if="msg.type === 'public'"><b>{{ msg.content }}</b></span>
+                        <span v-else-if="msg.user"><b>{{ msg.user }}</b>: {{msg.content}}</span>
+                        <span v-else-if="msg.type === 'broadcast'"><b>{{ msg.content }}</b></span>
                         <span v-else>{{ msg }}</span>
                     </div>
                 </div>
-                <input type="text" class="form-control w-100" placeholder="Message...">
-                <button type="button" class="btn btn-primary">Send</button>
+
+                <div v-if="channel.type === 'private'">
+                    <div v-if="channel.memberCount !== undefined" class="mb-2">
+                        Members in chat: {{channel.memberCount}}
+                    </div>
+                    <input type="text" class="form-control w-100" placeholder="Client name..." v-model="userName" readonly>
+                    <input type="text" class="form-control w-100" placeholder="Message..." v-model="message">
+                    <button type="button" class="btn btn-primary">Send message</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-danger">Leave channel</button>
+                </div>
+
             </div>
+            <hr />
 
         </div>
 
@@ -38,87 +53,104 @@
 export default {
     mounted() {
         console.log('Component mounted.')
+        if(window.authUser){
+            this.userName = window.authUser.name;
+            this.userId = window.authUser.id;
+        }
     },
 
     data() {
         return {
-            items: [],
-            activeChannel: -1
+            channels: [],
+            userId: null,
+            userName: null,
+            message: null
         }
     },
 
     methods: {
         joinPublic(event) {
-            let channelName = prompt('Enter the public channel name (e.g. notification)').trim();
-            if (!channelName) {
+            let channelName = prompt('Enter the public channel name (e.g. notification)');
+            if (!channelName || channelName.trim().length === 0) {
                 return;
             }
+            channelName = channelName.trim();
 
             Echo.channel(channelName)
                 .subscribed(() => {
-                    this.items.push({
+                    let channel = {
+                        type: 'public',
                         channel: channelName,
                         messages: []
-                    })
-                    this.setActiveChannel(channelName);
-                    this.pushStatusMessage(channelName, "Subscribed to public channel " + channelName);
+                    };
+
+                    this.channels.push(channel);
+                    this.setActiveChannel(channel);
+                    this.pushStatusMessage(channel, "Subscribed to public channel " + channelName);
                 })
                 .listenToAll((eventName, data) => {
                     console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
 
-                    this.pushPublicNotification(channelName, data)
+                    let channel = this.getChannelByName(channelName, 'public');
+                    this.pushPublicNotification(channel, data)
                 })
                 .error((err) => {
-                    console.error(err)
+                    alert("An error occurred while trying to join channel: " + err);
+                    console.error(err);
                 });
         },
 
-        pushStatusMessage(channelName, message) {
-            const channel = this.getChannelByName(channelName);
-            if (channel) {
-                channel.messages.push({
-                    type: 'status',
-                    content: message,
-                    time: new Date()
-                })
-                console.log(message);
-            }
+        pushStatusMessage(channel, message) {
+            channel.messages.push({
+                type: 'status',
+                content: message,
+                time: new Date()
+            })
         },
 
-        pushPublicNotification(channelName, data) {
-            const channel = this.getChannelByName(channelName);
-
-            if (channel) {
-                channel.messages.push({
-                    type: 'public',
-                    content: data.message,
-                    time: new Date()
-                });
-
-                const container = this.$el.querySelector("#tab-content-" + channelName + " > .messageContainer");
-                setTimeout(function () {
-                    container.scrollTop = container.scrollHeight;
-                }, 0);
-            }
-        },
-
-        getChannelByName(channelName) {
-            return this.items.find(obj => {
-                return obj.channel === channelName;
+        pushUserMessage(channel, message, user) {
+            channel.messages.push({
+                type: 'user',
+                user: user,
+                content: message,
+                time: new Date()
             });
         },
 
-        setActiveChannel(channelName) {
-            for (let i in this.items) {
-                if (channelName === this.items[i].channel) {
-                    this.activeChannelIndex = i;
-                    this.items[i].active = true;
+        pushPublicNotification(channel, data) {
+            channel.messages.push({
+                type: 'broadcast',
+                content: data.message,
+                time: new Date()
+            });
+        },
+
+        getChannelByName(channelName, type) {
+            return this.channels.find(obj => {
+                return obj.channel === channelName && obj.type === type;
+            });
+        },
+
+        getActiveChannelIndex() {
+            for (let i in this.channels) {
+                if (this.channels[i].active) {
+                    return parseInt(i);
+                }
+            }
+            return -1;
+        },
+
+        setActiveChannel(channel) {
+            for (let i in this.channels) {
+                if (channel.channel === this.channels[i].channel && channel.type === this.channels[i].type) {
+                    this.channels[i].active = true;
+                    this.$forceUpdate();
                 } else {
-                    this.items[i].active = false;
+                    this.channels[i].active = false;
+
                 }
             }
         }
-
     }
 
 }
