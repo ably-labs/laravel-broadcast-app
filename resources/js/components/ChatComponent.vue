@@ -148,26 +148,25 @@ export default {
                     channel.memberCount = members.length;
                     console.log("List of members: " + JSON.stringify(members));
                 })
-                .joining((info) => {
+                .joining((data) => {
                     let channel = this.getChannelByName(channelName, 'private');
 
-                    if(info.data !== undefined)
-                        this.pushStatusMessage(channel, info.data.name + " joined the channel");
+                    if(data != null && 'name' in data)
+                        this.pushStatusMessage(channel, data.name + " joined the channel");
                     else
-                        this.pushStatusMessage(channel, "User " + info.clientId + " joined the channel");
+                        this.pushStatusMessage(channel, "User " + data + " joined the channel");
 
-                    console.log(info, "joined channel")
+                    console.log(data, "joined channel")
                 })
-                .leaving((info) => {
+                .leaving((data) => {
                     let channel = this.getChannelByName(channelName, 'private');
 
-                    if(info.data !== undefined){
-                        this.pushStatusMessage(channel, info.data.name + " left the channel")
-                    }
+                    if(data != null && 'name' in data)
+                        this.pushStatusMessage(channel, data.name + " left the channel")
                     else
-                        this.pushStatusMessage(channel, "User " + info.clientId + " left the channel")
+                        this.pushStatusMessage(channel, "User " + data + " left the channel")
 
-                    console.log(info, "left channel")
+                    console.log(data, "left channel")
                 })
                 .listenToAll((eventName, data) => {
                     console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
