@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "ably": "^1.2.27",
-        "laravel-echo": "github:sac-fork/echo#ably-connector",
+        "laravel-echo": "github:ably-forks/echo",
         "pusher-js": "^4.4.0"
     }
 }
