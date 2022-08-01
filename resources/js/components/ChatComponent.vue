@@ -95,7 +95,11 @@ export default {
                     this.pushPublicNotification(channel, data)
                 })
                 .error((err) => {
-                    alert("An error occurred while trying to join channel: " + err);
+                    if(err.statusCode === 403)
+                        alert("You don't have the access to join this channel");
+                    else
+                        alert("An error occurred while trying to join channel: " + err);
+
                     console.error(err);
                 });
         },
@@ -129,7 +133,11 @@ export default {
                         this.pushPublicNotification(channel, data)
                 })
                 .error((err) => {
-                    alert("An error occurred while trying to join channel: " + err);
+                    if(err.statusCode === 403)
+                        alert("You don't have the access to join this channel, try entering the channel room-1 or room-2");
+                    else
+                        alert("An error occurred while trying to join channel: " + err);
+
                     console.error(err);
                 });
 
