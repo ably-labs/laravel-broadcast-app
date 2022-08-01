@@ -105,7 +105,7 @@ export default {
         },
 
         joinPrivate(event) {
-            let channelName = prompt('Enter the private channel name (e.g. chat1, room)');
+            let channelName = prompt('Enter the private channel name (e.g. room-1, room-2)');
             if (!channelName || channelName.trim().length === 0) {
                 return;
             }
