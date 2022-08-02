@@ -93,7 +93,7 @@ export default {
                 })
                 .listen('PublicMessageNotification', (data) => {
                     let channel = this.getChannelByName(channelName, 'public');
-                    this.pushPublicNotification(channel, data)
+                    this.pushBroadcastNotification(channel, data)
                 })
                 .error((err) => {
                     if('statusCode' in err) {
@@ -134,7 +134,7 @@ export default {
                 })
                 .listen('PrivateMessageNotification', (data) => {
                     let channel = this.getChannelByName(channelName, 'private');
-                    this.pushPublicNotification(channel, data)
+                    this.pushBroadcastNotification(channel, data)
                 })
                 .listen('.client-message', (data) => {
                     let channel = this.getChannelByName(channelName, 'private');
@@ -250,7 +250,7 @@ export default {
             this.scrollToBottom(channel);
         },
 
-        pushPublicNotification(channel, data) {
+        pushBroadcastNotification(channel, data) {
             channel.messages.push({
                 type: 'broadcast',
                 content: data.message,
