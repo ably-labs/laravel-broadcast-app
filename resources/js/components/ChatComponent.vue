@@ -136,7 +136,7 @@ export default {
                     this.pushUserMessage(channel, data.message, data.user);
                 })
                 .error((err) => {
-                    if (err && err.statusCode === 403 || err === 403) {
+                    if( err === 403 || err?.statusCode === 403) {
                         if(!window.authUser)
                             alert("You don't have the access to join this private channel, try logging into the application.");
                         else
