@@ -28,6 +28,7 @@ if(parseInt(usePusher) === 1) {
     window.Pusher = require('pusher-js');
 
     window.Echo = new Echo({
+        authEndpoint: '/broadcasting/auth?pusher=1', // Force use of AblyBroadcasterDeprecated
         broadcaster: 'pusher',
         key: process.env.MIX_ABLY_KEY.split(':')[0], // Use first part of the API key before : (colon)
         wsHost: 'realtime-pusher.ably.io',
