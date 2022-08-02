@@ -78,7 +78,7 @@ export default {
 
             Echo.channel(channelName)
                 .subscribed(() => {
-                    let channel = {
+                    const channel = {
                         type: 'public',
                         name: channelName,
                         messages: []
@@ -92,7 +92,7 @@ export default {
                     console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
                 })
                 .listen('PublicMessageNotification', (data) => {
-                    let channel = this.getChannelByName(channelName, 'public');
+                    const channel = this.getChannelByName(channelName, 'public');
                     this.pushBroadcastNotification(channel, data)
                 })
                 .error((err) => {
@@ -114,7 +114,7 @@ export default {
 
             Echo.private(channelName)
                 .subscribed(() => {
-                    let channel = {
+                    const channel = {
                         type: 'private',
                         name: channelName,
                         messages: []
@@ -125,16 +125,16 @@ export default {
                     this.pushStatusMessage(channel, "Subscribed to private channel " + channelName);
                 })
                 .listenToAll((eventName, data) => {
-                    let channel = this.getChannelByName(channelName, 'private');
+                    const channel = this.getChannelByName(channelName, 'private');
 
                     console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
                 })
                 .listen('PrivateMessageNotification', (data) => {
-                    let channel = this.getChannelByName(channelName, 'private');
+                    const channel = this.getChannelByName(channelName, 'private');
                     this.pushBroadcastNotification(channel, data)
                 })
                 .listenForWhisper('message', (data) => {
-                    let channel = this.getChannelByName(channelName, 'private');
+                    const channel = this.getChannelByName(channelName, 'private');
                     this.pushUserMessage(channel, data.message, data.user);
                 })
                 .error((err) => {
@@ -155,7 +155,7 @@ export default {
                     console.log(channelName, "Subscribed to presence channel " + channelName);
                 })
                 .here((members) => {
-                    let channel = this.getChannelByName(channelName, 'private');
+                    const channel = this.getChannelByName(channelName, 'private');
 
                     if(members.length <= 1)
                         this.pushStatusMessage(channel, "There are no other users in this channel");
@@ -166,7 +166,7 @@ export default {
                     console.log("List of members: " + JSON.stringify(members));
                 })
                 .joining((data) => {
-                    let channel = this.getChannelByName(channelName, 'private');
+                    const channel = this.getChannelByName(channelName, 'private');
 
                     if (data?.name)
                         this.pushStatusMessage(channel, data.name + " joined the channel");
@@ -176,7 +176,7 @@ export default {
                     console.log(data, "joined channel")
                 })
                 .leaving((data) => {
-                    let channel = this.getChannelByName(channelName, 'private');
+                    const channel = this.getChannelByName(channelName, 'private');
 
                     if (data?.name)
                         this.pushStatusMessage(channel, data.name + " left the channel")
@@ -194,14 +194,14 @@ export default {
         },
 
         sendMessage(event) {
-            let userName = this.userName?.trim();
-            let message = this.message?.trim();
+            const userName = this.userName?.trim();
+            const message = this.message?.trim();
             if(!message || !userName)
                 return;
 
-            let activeChannelIndex = this.getActiveChannelIndex();
+            const activeChannelIndex = this.getActiveChannelIndex();
 
-            let channel = this.channels[activeChannelIndex];
+            const channel = this.channels[activeChannelIndex];
 
             Echo.private(channel.name).whisper('message', {
                 user: userName,
@@ -211,9 +211,9 @@ export default {
         },
 
         leaveChannel(event) {
-            let activeChannelIndex = this.getActiveChannelIndex();
+            const activeChannelIndex = this.getActiveChannelIndex();
 
-            let channel = this.channels[activeChannelIndex];
+            const channel = this.channels[activeChannelIndex];
             Echo.leave(channel.name);
 
             this.channels.splice(activeChannelIndex, 1);
