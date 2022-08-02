@@ -90,7 +90,8 @@ export default {
                 })
                 .listenToAll((eventName, data) => {
                     console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
-
+                })
+                .listen('PublicMessageNotification', (data) => {
                     let channel = this.getChannelByName(channelName, 'public');
                     this.pushPublicNotification(channel, data)
                 })
@@ -130,10 +131,14 @@ export default {
                     let channel = this.getChannelByName(channelName, 'private');
 
                     console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
-                    if(eventName === '.client-message')
-                        this.pushUserMessage(channel, data.message, data.user);
-                    else
-                        this.pushPublicNotification(channel, data)
+                })
+                .listen('PrivateMessageNotification', (data) => {
+                    let channel = this.getChannelByName(channelName, 'private');
+                    this.pushPublicNotification(channel, data)
+                })
+                .listen('.client-message', (data) => {
+                    let channel = this.getChannelByName(channelName, 'private');
+                    this.pushUserMessage(channel, data.message, data.user);
                 })
                 .error((err) => {
                     if((typeof err === 'object' && 'statusCode' in err && err.statusCode === 403) || err === 403) {
