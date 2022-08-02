@@ -136,7 +136,7 @@ export default {
                     let channel = this.getChannelByName(channelName, 'private');
                     this.pushBroadcastNotification(channel, data)
                 })
-                .listen('.client-message', (data) => {
+                .listenForWhisper('message', (data) => {
                     let channel = this.getChannelByName(channelName, 'private');
                     this.pushUserMessage(channel, data.message, data.user);
                 })
