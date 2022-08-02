@@ -71,7 +71,7 @@ export default {
     methods: {
         joinPublic(event) {
             let channelName = prompt('Enter the public channel name (e.g. notification)');
-            if (!channelName || channelName.trim().length === 0) {
+            if (channelName?.trim().length === 0) {
                 return;
             }
             channelName = channelName.trim();
@@ -96,13 +96,10 @@ export default {
                     this.pushBroadcastNotification(channel, data)
                 })
                 .error((err) => {
-                    if('statusCode' in err) {
-
-                        if (err.statusCode === 401)
-                            alert("You don't have the access to join this public channel.");
-                        else
-                            alert("An error occurred while trying to join a public channel, check the console for details.");
-                    }
+                    if (err?.statusCode === 401)
+                        alert("You don't have the access to join this public channel.");
+                    else
+                        alert("An error occurred while trying to join a public channel, check the console for details.");
 
                     console.error(err);
                 });
@@ -141,7 +138,7 @@ export default {
                     this.pushUserMessage(channel, data.message, data.user);
                 })
                 .error((err) => {
-                    if((typeof err === 'object' && 'statusCode' in err && err.statusCode === 403) || err === 403) {
+                    if (err && err.statusCode === 403 || err === 403) {
                         if(!window.authUser)
                             alert("You don't have the access to join this private channel, try logging into the application.");
                         else
@@ -171,7 +168,7 @@ export default {
                 .joining((data) => {
                     let channel = this.getChannelByName(channelName, 'private');
 
-                    if(data && 'name' in data)
+                    if (data?.name)
                         this.pushStatusMessage(channel, data.name + " joined the channel");
                     else
                         this.pushStatusMessage(channel, "User " + data + " joined the channel");
@@ -181,7 +178,7 @@ export default {
                 .leaving((data) => {
                     let channel = this.getChannelByName(channelName, 'private');
 
-                    if(data && 'name' in data)
+                    if (data?.name)
                         this.pushStatusMessage(channel, data.name + " left the channel")
                     else
                         this.pushStatusMessage(channel, "User " + data + " left the channel")
@@ -197,8 +194,8 @@ export default {
         },
 
         sendMessage(event) {
-            let userName = this.userName ? this.userName.trim() : null;
-            let message = this.message ? this.message.trim() : null;
+            let userName = this.userName?.trim();
+            let message = this.message?.trim();
             if(!message || !userName)
                 return;
 
