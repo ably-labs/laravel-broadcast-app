@@ -9,9 +9,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -23,6 +20,9 @@
     @else
         <script>window.authUser=null;</script>
     @endif
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body>
     <div id="app">
