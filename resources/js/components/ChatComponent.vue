@@ -213,12 +213,7 @@ export default {
             let activeChannelIndex = this.getActiveChannelIndex();
 
             let channel = this.channels[activeChannelIndex];
-            let channelName = channel.type + ':' + channel.channel
-            Echo.leaveChannel(channelName);
-
-            // If we're leaving a private channel, we also need to leave the presence channel
-            if(channel.type === 'private')
-                Echo.leaveChannel('presence:' + channel.channel);
+            Echo.leave(channel.channel);
 
             this.channels.splice(activeChannelIndex, 1);
 
