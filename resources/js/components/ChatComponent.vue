@@ -95,10 +95,13 @@ export default {
                     this.pushPublicNotification(channel, data)
                 })
                 .error((err) => {
-                    if(err.statusCode === 403)
-                        alert("You don't have the access to join this channel");
-                    else
-                        alert("An error occurred while trying to join channel: " + err);
+                    if('statusCode' in err) {
+
+                        if (err.statusCode === 401)
+                            alert("You don't have the access to join this public channel.");
+                        else
+                            alert("An error occurred while trying to join a public channel, check the console for details.");
+                    }
 
                     console.error(err);
                 });
@@ -133,10 +136,16 @@ export default {
                         this.pushPublicNotification(channel, data)
                 })
                 .error((err) => {
-                    if(err.statusCode === 403)
-                        alert("You don't have the access to join this channel, try entering the channel room-1 or room-2");
-                    else
-                        alert("An error occurred while trying to join channel: " + err);
+                    if('statusCode' in err) {
+                        if(err.statusCode === 403) {
+                            if(!window.authUser)
+                                alert("You don't have the access to join this private channel, try logging into the application.");
+                            else
+                                alert("You don't have the access to join this private channel, try entering the channel room-1 or room-2");
+                        }
+                        else
+                            alert("An error occurred while trying to join a private channel, check the console for details.");
+                    }
 
                     console.error(err);
                 });
