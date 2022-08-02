@@ -155,7 +155,7 @@ export default {
                 .here((members) => {
                     let channel = this.getChannelByName(channelName, 'private');
 
-                    if(members.length === 1)
+                    if(members.length <= 1)
                         this.pushStatusMessage(channel, "There are no other users in this channel");
                     else
                         this.pushStatusMessage(channel, "There are " + members.length + " users in this channel");
@@ -166,7 +166,7 @@ export default {
                 .joining((data) => {
                     let channel = this.getChannelByName(channelName, 'private');
 
-                    if(data != null && 'name' in data)
+                    if(data && 'name' in data)
                         this.pushStatusMessage(channel, data.name + " joined the channel");
                     else
                         this.pushStatusMessage(channel, "User " + data + " joined the channel");
@@ -176,7 +176,7 @@ export default {
                 .leaving((data) => {
                     let channel = this.getChannelByName(channelName, 'private');
 
-                    if(data != null && 'name' in data)
+                    if(data && 'name' in data)
                         this.pushStatusMessage(channel, data.name + " left the channel")
                     else
                         this.pushStatusMessage(channel, "User " + data + " left the channel")
