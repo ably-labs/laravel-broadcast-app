@@ -2,7 +2,7 @@
     <div>
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist" v-if="channels.length">
             <li v-for="channel in channels" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.name">
-                <button :class="'nav-link ' + (channel.active ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.name"
+                <button :class="'nav-link ' + (channel=== active ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.name"
                         data-bs-toggle="tab" :data-bs-target="'#tab-content-' + channel.type + '-' + channel.name" type="button"
                         @click="setActiveChannel(channel)">
                     {{ channel.name }} ({{channel.type}})
@@ -11,7 +11,7 @@
 
         </ul>
         <div class="tab-content" id="myTabContent" v-if="channels.length">
-            <div v-for="channel in channels" :class="'tab-pane fade ' + (channel.active ? 'show active' : '')"
+            <div v-for="channel in channels" :class="'tab-pane fade ' + (channel === active ? 'show active' : '')"
                  :id="'tab-content-' + channel.type + '-' + channel.name"
                  :key="'tab-content-' + channel.type + '-' + channel.name">
                 <div class="messageContainer">
@@ -61,6 +61,7 @@ export default {
 
     data() {
         return {
+            active: null,
             channels: [],
             userId: null,
             userName: null,
@@ -197,9 +198,7 @@ export default {
             if(!message || !userName)
                 return;
 
-            const activeChannelIndex = this.getActiveChannelIndex();
-
-            const channel = this.channels[activeChannelIndex];
+            const channel = this.active;
 
             Echo.private(channel.name).whisper('message', {
                 user: userName,
@@ -263,7 +262,7 @@ export default {
 
         getActiveChannelIndex() {
             for (let i in this.channels) {
-                if (this.channels[i].active) {
+                if (this.channels[i] === this.active) {
                     return parseInt(i);
                 }
             }
@@ -271,15 +270,8 @@ export default {
         },
 
         setActiveChannel(channel) {
-            for (let i in this.channels) {
-                if (channel.name === this.channels[i].name && channel.type === this.channels[i].type) {
-                    this.channels[i].active = true;
-                    this.$forceUpdate();
-                } else {
-                    this.channels[i].active = false;
-
-                }
-            }
+            this.active = channel;
+            this.$forceUpdate();
         },
 
         scrollToBottom(channel) {
