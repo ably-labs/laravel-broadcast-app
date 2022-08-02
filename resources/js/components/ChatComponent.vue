@@ -1,19 +1,19 @@
 <template>
     <div>
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist" v-if="channels.length">
-            <li v-for="channel in channels" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.channel">
-                <button :class="'nav-link ' + (channel.active ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.channel"
-                        data-bs-toggle="tab" :data-bs-target="'#tab-content-' + channel.type + '-' + channel.channel" type="button"
+            <li v-for="channel in channels" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.name">
+                <button :class="'nav-link ' + (channel.active ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.name"
+                        data-bs-toggle="tab" :data-bs-target="'#tab-content-' + channel.type + '-' + channel.name" type="button"
                         @click="setActiveChannel(channel)">
-                    {{ channel.channel }} ({{channel.type}})
+                    {{ channel.name }} ({{channel.type}})
                 </button>
             </li>
 
         </ul>
         <div class="tab-content" id="myTabContent" v-if="channels.length">
             <div v-for="channel in channels" :class="'tab-pane fade ' + (channel.active ? 'show active' : '')"
-                 :id="'tab-content-' + channel.type + '-' + channel.channel"
-                 :key="'tab-content-' + channel.type + '-' + channel.channel">
+                 :id="'tab-content-' + channel.type + '-' + channel.name"
+                 :key="'tab-content-' + channel.type + '-' + channel.name">
                 <div class="messageContainer">
                     <div v-for="msg in channel.messages">
                         <span v-if="msg.time instanceof Date">[{{ msg.time.toLocaleTimeString() }}]</span>
@@ -80,7 +80,7 @@ export default {
                 .subscribed(() => {
                     let channel = {
                         type: 'public',
-                        channel: channelName,
+                        name: channelName,
                         messages: []
                     };
 
@@ -118,7 +118,7 @@ export default {
                 .subscribed(() => {
                     let channel = {
                         type: 'private',
-                        channel: channelName,
+                        name: channelName,
                         messages: []
                     };
 
@@ -200,9 +200,8 @@ export default {
             let activeChannelIndex = this.getActiveChannelIndex();
 
             let channel = this.channels[activeChannelIndex];
-            let channelName = channel.channel;
 
-            Echo.private(channelName).whisper('message', {
+            Echo.private(channel.name).whisper('message', {
                 user: userName,
                 message: message
             });
@@ -213,7 +212,7 @@ export default {
             let activeChannelIndex = this.getActiveChannelIndex();
 
             let channel = this.channels[activeChannelIndex];
-            Echo.leave(channel.channel);
+            Echo.leave(channel.name);
 
             this.channels.splice(activeChannelIndex, 1);
 
@@ -258,7 +257,7 @@ export default {
 
         getChannelByName(channelName, type) {
             return this.channels.find(obj => {
-                return obj.channel === channelName && obj.type === type;
+                return obj.name === channelName && obj.type === type;
             });
         },
 
@@ -273,7 +272,7 @@ export default {
 
         setActiveChannel(channel) {
             for (let i in this.channels) {
-                if (channel.channel === this.channels[i].channel && channel.type === this.channels[i].type) {
+                if (channel.name === this.channels[i].name && channel.type === this.channels[i].type) {
                     this.channels[i].active = true;
                     this.$forceUpdate();
                 } else {
@@ -284,7 +283,7 @@ export default {
         },
 
         scrollToBottom(channel) {
-            const container = this.$el.querySelector("#tab-content-" + channel.type + "-" + channel.channel + " > .messageContainer");
+            const container = this.$el.querySelector("#tab-content-" + channel.type + "-" + channel.name + " > .messageContainer");
             if(container){
                 setTimeout(function () {
                     container.scrollTop = container.scrollHeight;
