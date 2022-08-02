@@ -36,6 +36,6 @@ Route::get('/presence-event', function (Request $request) {
 
 Route::get('/listen', function () {
     return view('listen');
-});
+})->name('listen');
 
 Auth::routes(['reset' => false]);
