@@ -125,8 +125,6 @@ export default {
                     this.pushStatusMessage(channel, "Subscribed to private channel " + channelName);
                 })
                 .listenToAll((eventName, data) => {
-                    const channel = this.getChannelByName(channelName, 'private');
-
                     console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
                 })
                 .listen('PrivateMessageNotification', (data) => {
