@@ -23,15 +23,15 @@ Route::get('/', function () {
 });
 
 Route::get('/public-event', function (Request $request) {
-    return event(new PublicMessageNotification($request->channel, $request->message));
+    event(new PublicMessageNotification($request->channel, $request->message));
 });
 
 Route::get('/private-event', function (Request $request) {
-    return event(new PrivateMessageNotification($request->channel, $request->message));
+    event(new PrivateMessageNotification($request->channel, $request->message));
 });
 
 Route::get('/presence-event', function (Request $request) {
-    return event(new PresenceMessageNotification($request->channel, $request->message));
+    event(new PresenceMessageNotification($request->channel, $request->message));
 });
 
 Route::get('/listen', function () {
