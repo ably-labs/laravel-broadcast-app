@@ -1,7 +1,7 @@
 <template>
     <div>
-        <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist" v-if="channels.length">
-            <li v-for="channel in channels" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.name">
+        <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist" v-if="tabs.length">
+            <li v-for="channel in tabs" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.name">
                 <button :class="'nav-link ' + (channel=== active ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.name"
                         data-bs-toggle="tab" :data-bs-target="'#tab-content-' + channel.type + '-' + channel.name" type="button"
                         @click="setActiveChannel(channel)">
@@ -10,8 +10,8 @@
             </li>
 
         </ul>
-        <div class="tab-content" id="myTabContent" v-if="channels.length">
-            <div v-for="channel in channels" :class="'tab-pane fade ' + (channel === active ? 'show active' : '')"
+        <div class="tab-content" id="myTabContent" v-if="tabs.length">
+            <div v-for="channel in tabs" :class="'tab-pane fade ' + (channel === active ? 'show active' : '')"
                  :id="'tab-content-' + channel.type + '-' + channel.name"
                  :key="'tab-content-' + channel.type + '-' + channel.name">
                 <div class="messageContainer">
@@ -66,7 +66,7 @@ export default {
     data() {
         return {
             active: null,
-            channels: [],
+            tabs: [],
             userId: null,
             userName: null,
             message: null
@@ -89,7 +89,7 @@ export default {
                         messages: []
                     };
 
-                    this.channels.push(channel);
+                    this.tabs.push(channel);
                     this.setActiveChannel(channel);
                     this.pushStatusMessage(channel, "Subscribed to public channel " + channelName);
                 })
@@ -125,7 +125,7 @@ export default {
                         messages: []
                     };
 
-                    this.channels.push(channel);
+                    this.tabs.push(channel);
                     this.setActiveChannel(channel);
                     this.pushStatusMessage(channel, "Subscribed to private channel " + channelName);
                 })
@@ -231,16 +231,16 @@ export default {
         leaveChannel(event) {
             const activeChannelIndex = this.getActiveChannelIndex();
 
-            const channel = this.channels[activeChannelIndex];
+            const channel = this.tabs[activeChannelIndex];
             Echo.leave(channel.name);
 
-            this.channels.splice(activeChannelIndex, 1);
+            this.tabs.splice(activeChannelIndex, 1);
 
-            if (this.channels.length) {
+            if (this.tabs.length) {
                 if (activeChannelIndex === 0) {
-                    this.setActiveChannel(this.channels[0]);
+                    this.setActiveChannel(this.tabs[0]);
                 } else
-                    this.setActiveChannel(this.channels[activeChannelIndex - 1]);
+                    this.setActiveChannel(this.tabs[activeChannelIndex - 1]);
             }
         },
 
@@ -276,14 +276,14 @@ export default {
         },
 
         getChannelByName(channelName, type) {
-            return this.channels.find(obj => {
+            return this.tabs.find(obj => {
                 return obj.name === channelName && obj.type === type;
             });
         },
 
         getActiveChannelIndex() {
-            for (let i in this.channels) {
-                if (this.channels[i] === this.active) {
+            for (let i in this.tabs) {
+                if (this.tabs[i] === this.active) {
                     return parseInt(i);
                 }
             }
