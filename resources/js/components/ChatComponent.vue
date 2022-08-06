@@ -207,6 +207,10 @@ export default {
             Echo.private(channel.name).whisper('message', {
                 user: userName,
                 message: message
+            }, (err) => {
+                if(!err && !Echo.options.echoMessages) {
+                    this.pushUserMessage(channel, message, userName);
+                }
             });
             this.message = null;
         },
