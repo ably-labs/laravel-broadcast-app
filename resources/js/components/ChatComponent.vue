@@ -1,9 +1,9 @@
 <template>
     <div>
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist" v-if="tabs.length">
-            <li v-for="(channel, index) in tabs" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.name">
-                <button :class="'nav-link ' + (channel === getActiveChannel() ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.name"
-                        data-bs-toggle="tab" :data-bs-target="'#tab-content-' + channel.type + '-' + channel.name" type="button"
+            <li v-for="(channel, index) in tabs" class="nav-item" role="presentation" :key="'item-' + channel.formattedName">
+                <button :class="'nav-link ' + (channel === getActiveChannel() ? 'active' : '')" :id="'tab-' + channel.formattedName"
+                        data-bs-toggle="tab" :data-bs-target="'#tab-content-' + channel.formattedName" type="button"
                         @click="setActiveChannelIndex(index)">
                     {{ channel.name }} ({{channel.type}})
                 </button>
@@ -12,8 +12,8 @@
         </ul>
         <div class="tab-content" id="myTabContent" v-if="tabs.length">
             <div v-for="channel in tabs" :class="'tab-pane fade ' + (channel === getActiveChannel() ? 'show active' : '')"
-                 :id="'tab-content-' + channel.type + '-' + channel.name"
-                 :key="'tab-content-' + channel.type + '-' + channel.name">
+                 :id="'tab-content-' + channel.formattedName"
+                 :key="'tab-content-' + channel.formattedName">
                 <div class="messageContainer">
                     <div v-for="msg in channel.messages">
                         <span v-if="msg.time instanceof Date">[{{ msg.time.toLocaleTimeString() }}]</span>
@@ -54,6 +54,17 @@
 </template>
 
 <script>
+export class Channel {
+    constructor(props) {
+        this.type = props.type;
+        this.name = props.name;
+        this.messages = props.messages;
+    }
+    get formattedName() {
+        return `${this.type}-${this.name}`;
+    }
+}
+
 export default {
     mounted() {
         console.log('Component mounted.')
@@ -66,6 +77,7 @@ export default {
     data() {
         return {
             activeIndex: -1,
+            /** @type {Array<Channel>} **/
             tabs: [],
             userId: null,
             userName: null,
@@ -83,11 +95,11 @@ export default {
 
             Echo.channel(channelName)
                 .subscribed(() => {
-                    const channel = {
+                    const channel = new Channel({
                         type: 'public',
                         name: channelName,
                         messages: []
-                    };
+                    });
 
                     this.tabs.push(channel);
                     this.setActiveChannelIndex(this.tabs.length - 1);
@@ -119,11 +131,11 @@ export default {
 
             Echo.private(channelName)
                 .subscribed(() => {
-                    const channel = {
+                    const channel = new Channel({
                         type: 'private',
                         name: channelName,
                         messages: []
-                    };
+                    });
 
                     this.tabs.push(channel);
                     this.setActiveChannelIndex(this.tabs.length - 1);
@@ -288,7 +300,7 @@ export default {
         },
 
         scrollToBottom(channel) {
-            const container = this.$el.querySelector("#tab-content-" + channel.type + "-" + channel.name + " > .messageContainer");
+            const container = this.$el.querySelector("#tab-content-" + channel.formattedName + " > .messageContainer");
             if(container){
                 setTimeout(function () {
                     container.scrollTop = container.scrollHeight;
