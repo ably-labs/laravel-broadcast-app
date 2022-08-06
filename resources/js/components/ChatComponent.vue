@@ -30,7 +30,7 @@
                     </div>
                     <input type="text" class="form-control w-100" placeholder="Client name..." v-model="userName" readonly>
                     <input type="text" class="form-control w-100" placeholder="Message..." v-model="message">
-                    <button type="button" class="btn btn-primary" @click="sendMessage">Send message</button>
+                    <button type="button" class="btn btn-primary" @click="sendMessage">Send client message</button>
                 </div>
                 <div v-if="channel.type === 'public'">
                     <input type="text" class="form-control w-100" placeholder="Message..." v-model="message">
