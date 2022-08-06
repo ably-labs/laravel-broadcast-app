@@ -58,7 +58,20 @@ export class Channel {
     constructor(props) {
         this.type = props.type;
         this.name = props.name;
+        /** @type {Array<Message>} **/
         this.messages = props.messages;
+    }
+    get formattedName() {
+        return `${this.type}-${this.name}`;
+    }
+}
+
+export class Message {
+    constructor(props) {
+        this.type = props.type;
+        this.user = props.user;
+        this.content = props.content;
+        this.time = props.time ?? new Date();
     }
     get formattedName() {
         return `${this.type}-${this.name}`;
@@ -255,32 +268,29 @@ export default {
         },
 
         pushStatusMessage(channel, message) {
-            channel.messages.push({
+            channel.messages.push(new Message({
                 type: 'status',
-                content: message,
-                time: new Date()
-            })
+                content: message
+            }))
 
             this.scrollToBottom(channel);
         },
 
         pushUserMessage(channel, message, user) {
-            channel.messages.push({
+            channel.messages.push(new Message({
                 type: 'user',
                 user: user,
-                content: message,
-                time: new Date()
-            });
+                content: message
+            }));
 
             this.scrollToBottom(channel);
         },
 
         pushBroadcastNotification(channel, data) {
-            channel.messages.push({
+            channel.messages.push(new Message({
                 type: 'broadcast',
-                content: data.message,
-                time: new Date()
-            });
+                content: data.message
+            }));
 
             this.scrollToBottom(channel);
         },
