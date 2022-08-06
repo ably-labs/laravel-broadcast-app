@@ -1,17 +1,17 @@
 <template>
     <div>
         <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist" v-if="tabs.length">
-            <li v-for="channel in tabs" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.name">
-                <button :class="'nav-link ' + (channel=== active ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.name"
+            <li v-for="(channel, index) in tabs" class="nav-item" role="presentation" :key="'item-' + channel.type + '-' + channel.name">
+                <button :class="'nav-link ' + (channel === getActiveChannel() ? 'active' : '')" :id="'tab-' + channel.type + '-' + channel.name"
                         data-bs-toggle="tab" :data-bs-target="'#tab-content-' + channel.type + '-' + channel.name" type="button"
-                        @click="setActiveChannel(channel)">
+                        @click="setActiveChannelIndex(index)">
                     {{ channel.name }} ({{channel.type}})
                 </button>
             </li>
 
         </ul>
         <div class="tab-content" id="myTabContent" v-if="tabs.length">
-            <div v-for="channel in tabs" :class="'tab-pane fade ' + (channel === active ? 'show active' : '')"
+            <div v-for="channel in tabs" :class="'tab-pane fade ' + (channel === getActiveChannel() ? 'show active' : '')"
                  :id="'tab-content-' + channel.type + '-' + channel.name"
                  :key="'tab-content-' + channel.type + '-' + channel.name">
                 <div class="messageContainer">
@@ -65,7 +65,7 @@ export default {
 
     data() {
         return {
-            active: null,
+            activeIndex: -1,
             tabs: [],
             userId: null,
             userName: null,
@@ -90,7 +90,7 @@ export default {
                     };
 
                     this.tabs.push(channel);
-                    this.setActiveChannel(channel);
+                    this.setActiveChannelIndex(this.tabs.length - 1);
                     this.pushStatusMessage(channel, "Subscribed to public channel " + channelName);
                 })
                 .listenToAll((eventName, data) => {
@@ -126,7 +126,7 @@ export default {
                     };
 
                     this.tabs.push(channel);
-                    this.setActiveChannel(channel);
+                    this.setActiveChannelIndex(this.tabs.length - 1);
                     this.pushStatusMessage(channel, "Subscribed to private channel " + channelName);
                 })
                 .listenToAll((eventName, data) => {
@@ -202,7 +202,7 @@ export default {
             if(!message || !userName)
                 return;
 
-            const channel = this.active;
+            const channel = this.getActiveChannel();
 
             Echo.private(channel.name).whisper('message', {
                 user: userName,
@@ -220,7 +220,7 @@ export default {
             if(!message)
                 return;
 
-            const channel = this.active.name;
+            const channel = this.getActiveChannel().name;
 
             const broadcastUrl = window.location.origin + "/public-event";
             axios.get(broadcastUrl, { params: { message, channel}});
@@ -229,18 +229,16 @@ export default {
         },
 
         leaveChannel(event) {
-            const activeChannelIndex = this.getActiveChannelIndex();
-
-            const channel = this.tabs[activeChannelIndex];
+            const channel = this.getActiveChannel();
             Echo.leave(channel.name);
 
-            this.tabs.splice(activeChannelIndex, 1);
+            this.tabs.splice(this.activeIndex, 1);
 
             if (this.tabs.length) {
-                if (activeChannelIndex === 0) {
-                    this.setActiveChannel(this.tabs[0]);
+                if (this.activeIndex === 0) {
+                    this.setActiveChannelIndex(0);
                 } else
-                    this.setActiveChannel(this.tabs[activeChannelIndex - 1]);
+                    this.setActiveChannelIndex(this.activeIndex - 1);
             }
         },
 
@@ -281,18 +279,12 @@ export default {
             });
         },
 
-        getActiveChannelIndex() {
-            for (let i in this.tabs) {
-                if (this.tabs[i] === this.active) {
-                    return parseInt(i);
-                }
-            }
-            return -1;
+        getActiveChannel() {
+            return this.tabs[this.activeIndex];
         },
 
-        setActiveChannel(channel) {
-            this.active = channel;
-            this.$forceUpdate();
+        setActiveChannelIndex(index) {
+            this.activeIndex = index;
         },
 
         scrollToBottom(channel) {
