@@ -32,6 +32,10 @@
                     <input type="text" class="form-control w-100" placeholder="Message..." v-model="message">
                     <button type="button" class="btn btn-primary" @click="sendMessage">Send message</button>
                 </div>
+                <div v-if="channel.type === 'public'">
+                    <input type="text" class="form-control w-100" placeholder="Message..." v-model="message">
+                    <button type="button" class="btn btn-success" @click="broadcastMessage">Broadcast message</button>
+                </div>
                 <div>
                     <button type="button" class="btn btn-danger" @click="leaveChannel">Leave channel</button>
                 </div>
@@ -204,6 +208,19 @@ export default {
                 user: userName,
                 message: message
             });
+            this.message = null;
+        },
+
+        broadcastMessage(event) {
+            const message = this.message?.trim();
+            if(!message)
+                return;
+
+            const channel = this.active.name;
+
+            const broadcastUrl = window.location.origin + "/public-event";
+            axios.get(broadcastUrl, { params: { message, channel}});
+
             this.message = null;
         },
 
