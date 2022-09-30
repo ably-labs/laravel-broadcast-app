@@ -23,11 +23,11 @@
                         Members in chat: {{channel.memberCount}}
                     </div>
                     <input type="text" class="form-control w-100" placeholder="Client name..." v-model="userName" readonly>
-                    <input type="text" class="form-control w-100" placeholder="Message..." v-model="message">
+                    <input type="text" class="form-control w-100" placeholder="Message..." v-model="message" v-on:keydown.enter="sendMessage">
                     <button type="button" class="btn btn-primary" @click="sendMessage">Send client message</button>
                 </div>
                 <div v-if="channel.type === 'public'">
-                    <input type="text" class="form-control w-100" placeholder="Message..." v-model="message">
+                    <input type="text" class="form-control w-100" placeholder="Message..." v-model="message" v-on:keydown.enter="broadcastMessage">
                     <button type="button" class="btn btn-success" @click="broadcastMessage">Broadcast message</button>
                 </div>
                 <div>
