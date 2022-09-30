@@ -11286,3 +11286,8 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.messageContainer{
+    overflow-y: auto;
+    height: 400px;
+}
+
