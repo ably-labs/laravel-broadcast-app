@@ -40,10 +40,12 @@ return [
                 'useTLS' => true,
             ],
         ],
-
         'ably' => [
             'driver' => 'ably',
             'key' => env('ABLY_KEY'),
+            'pusher_adapter' => env('ABLY_PUSHER_ADAPTER', false),
+            'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', false),
+            'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600)
         ],
 
         'redis' => [

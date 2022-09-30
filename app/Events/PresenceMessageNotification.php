@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 class PresenceMessageNotification implements ShouldBroadcast
 {
+    public $channel;
     public $message;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -20,8 +21,9 @@ class PresenceMessageNotification implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($channel, $message)
     {
+        $this->channel = $channel;
         $this->message = $message;
     }
 
@@ -32,6 +34,6 @@ class PresenceMessageNotification implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel('room');
+        return new PresenceChannel($this->channel);
     }
 }
