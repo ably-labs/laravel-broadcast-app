@@ -42,4 +42,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Checks if the user is allowed to join a room
+     *
+     * @param $roomId
+     *
+     * @return bool
+     */
+    function canJoinRoom($roomId): bool {
+        return true;
+    }
 }

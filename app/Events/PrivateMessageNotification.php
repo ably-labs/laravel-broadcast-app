@@ -10,6 +10,7 @@ use Illuminate\Queue\SerializesModels;
 
 class PrivateMessageNotification implements ShouldBroadcast
 {
+    public $channel;
     public $message;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -19,8 +20,9 @@ class PrivateMessageNotification implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($channel, $message)
     {
+        $this->channel = $channel;
         $this->message = $message;
     }
 
@@ -31,6 +33,6 @@ class PrivateMessageNotification implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('notification');
+        return new PrivateChannel($this->channel);
     }
 }
