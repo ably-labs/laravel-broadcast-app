@@ -11290,4 +11290,7 @@ textarea.form-control-lg {
     overflow-y: auto;
     height: 400px;
 }
+.typingContainer{
+    height: 20px;
+}
 

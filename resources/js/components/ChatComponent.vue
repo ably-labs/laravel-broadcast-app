@@ -19,11 +19,14 @@
                 </div>
 
                 <div v-if="channel.type === 'private'">
+                    <div class="mb-2 typingContainer">
+                        <span v-if="channel.typingNames.length > 0">{{channel.typingNames.join(', ')}} {{channel.typingNames.length === 1 ? "is" : "are"}} typing...</span>
+                    </div>
                     <div v-if="channel.memberCount !== undefined" class="mb-2">
                         Members in chat: {{channel.memberCount}}
                     </div>
                     <input type="text" class="form-control w-100" placeholder="Client name..." v-model="userName" readonly>
-                    <input type="text" class="form-control w-100" placeholder="Message..." v-model="message" v-on:keydown.enter="sendMessage">
+                    <input type="text" class="form-control w-100" placeholder="Message..." v-model="message" v-on:keydown.enter="sendMessage" v-on:keydown="typingStart">
                     <button type="button" class="btn btn-primary" @click="sendMessage">Send client message</button>
                 </div>
                 <div v-if="channel.type === 'public'">
@@ -53,7 +56,9 @@ export class Channel {
         this.type = props.type;
         this.name = props.name;
         /** @type {Array<Message>} **/
-        this.messages = props.messages;
+        this.messages = props.messages || [];
+        this.typingNames = props.typingNames || [];
+        this.typingStopEvents = props.typingStopEvents || []
     }
     get formattedName() {
         return `${this.type}-${this.name}`;
@@ -88,7 +93,8 @@ export default {
             tabs: [],
             userId: null,
             userName: null,
-            message: null
+            message: null,
+            throttleTyping: false
         }
     },
 
@@ -104,8 +110,7 @@ export default {
                 .subscribed(() => {
                     const channel = new Channel({
                         type: 'public',
-                        name: channelName,
-                        messages: []
+                        name: channelName
                     });
 
                     this.tabs.push(channel);
@@ -140,8 +145,7 @@ export default {
                 .subscribed(() => {
                     const channel = new Channel({
                         type: 'private',
-                        name: channelName,
-                        messages: []
+                        name: channelName
                     });
 
                     this.tabs.push(channel);
@@ -158,6 +162,23 @@ export default {
                 .listenForWhisper('message', (data) => {
                     const channel = this.getChannelByName(channelName, 'private');
                     this.pushUserMessage(channel, data.message, data.user);
+                })
+                .listenForWhisper('typing', (data) => {
+                    let user = data.user;
+                    if(!user)
+                        return;
+
+                    const channel = this.getChannelByName(channelName, 'private');
+                    clearTimeout(channel.typingStopEvents[user]);
+
+                    if(!channel.typingNames.includes(user))
+                        channel.typingNames.push(user);
+
+                    channel.typingStopEvents[user] = setTimeout(() => {
+                        delete channel.typingStopEvents[user];
+                        channel.typingNames = channel.typingNames.filter(e => e !== user);
+                    }, 1500);
+
                 })
                 .error((err) => {
                     if( err === 403 || err?.statusCode === 403) {
@@ -232,6 +253,25 @@ export default {
                 }
             });
             this.message = null;
+        },
+
+        /**
+         * @param event KeyboardEvent
+         */
+        typingStart(event) {
+            if (this.throttleTyping || event.key.length !== 1)
+                return;
+
+            this.throttleTyping = true;
+
+            const userName = this.userName?.trim();
+            const channel = this.getActiveChannel();
+            Echo.private(channel.name)
+                .whisper('typing', { user: userName });
+
+            setTimeout(() => {
+                this.throttleTyping = false;
+            }, 1000);
         },
 
         broadcastMessage(event) {
