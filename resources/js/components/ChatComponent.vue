@@ -307,7 +307,7 @@ export default {
                 content: message
             }))
 
-            this.scrollToBottom(channel);
+            this.scrollToBottom();
         },
 
         pushUserMessage(channel, message, user) {
@@ -317,7 +317,7 @@ export default {
                 content: message
             }));
 
-            this.scrollToBottom(channel);
+            this.scrollToBottom();
         },
 
         pushBroadcastNotification(channel, data) {
@@ -326,7 +326,7 @@ export default {
                 content: data.message
             }));
 
-            this.scrollToBottom(channel);
+            this.scrollToBottom();
         },
 
         getChannelByName(channelName, type) {
@@ -343,13 +343,14 @@ export default {
             this.activeIndex = index;
         },
 
-        scrollToBottom(channel) {
-            const container = this.$el.querySelector("#tab-content-" + channel.formattedName + " > .messageContainer");
-            if(container){
-                setTimeout(function () {
+        scrollToBottom() {
+            this.$nextTick(() => {
+                const container = this.$el.querySelector("#myTabContent > .tab-pane.active > .messageContainer");
+                if(container){
                     container.scrollTop = container.scrollHeight;
-                }, 0);
-            }
+                }
+            });
+
         }
     }
 
