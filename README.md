@@ -3,13 +3,11 @@
 Demo web-chat app using Ably Broadcaster+Echo based on laravel
 
 ## Features
-* Public rooms for a guest user.
-* Laravel built-in user authentication (login, registration).
-* Public chat rooms (no client permission to send messages, only broadcast supported).
-* Private chat rooms (chat between several participants).
-* Presence channels (visible join/leave events and the number of participants).
-* Sample implementation of a typing indicator.
-* Joining multiple chat rooms simultaneously.
+* Public chat rooms for a guest user.
+* Laravel built-in user authentication (registration + login).
+* Private chat rooms with presence for authenticated users.
+* Typing indicator for private rooms.
+* Join multiple rooms simultaneously.
 
 ## Requirements
 1. PHP version >= 7.3
@@ -43,13 +41,14 @@ npm run watch
 ## Usage
 The web app runs in two modes
 
-**1. Guest Mode ( Only public rooms can be created / accessed)**
+**1. Guest Mode ( Only public rooms can be created / joined)**
 - Use room name in any format.
 - In public rooms, messages are published via server (client can't publish messages via echo).
 
-**2. User Mode ( Private rooms can be created / accessed)**
-- If user signed up and logged in into the Laravel app, it can join a private room. The required room prefix is `room-<id>`, as defined in `routes/rooms.php`
-- In private rooms, messages are published via Laravel Echo from client-side. In addition, the typing indicator is visible when applicable.
+**2. User Mode ( Private rooms can be created / joined)**
+- If user signed up and logged in into the Laravel app, it can create/join a private room.
+- The required room prefix is `room-<id>`, as defined in `routes/rooms.php`.
+- In private rooms, messages are published via Laravel Echo from client-side. 
 
 ## Screenshots
 
@@ -58,5 +57,6 @@ The web app runs in two modes
 <img src="docs/images/public_room.png" alt="Public room example">
 
 **Private room**
+
 
 <img src="docs/images/private_room.png" alt="Public room example">
