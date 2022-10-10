@@ -1,6 +1,6 @@
 # Chat app using Ably Broadcaster+Echo
 
-Demo web-chat app using Ably Broadcaster+Echo based on laravel
+Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 
 ## Features
 * Public chat rooms for a guest user.
@@ -9,37 +9,39 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel
 * Typing indicator for private rooms.
 * Join multiple rooms simultaneously.
 
+Note - Pusher mode uses legacy AblyBroadcaster + Pusher client and not recommended for use.
+
 ## Requirements
-1. PHP version >= 7.3
-2. Node.js >= 14.x.x
+1. PHP version >= 7.3.
+2. Node.js >= 14.x.x.
 
 ## Setup
 
-1. Clone the repository
+1. Clone the repository.
 ```
 git clone https://github.com/ably-labs/laravel-broadcast-app
 ```
-2. Install dependencies
+2. Install dependencies.
 ```
 composer install
 npm install
 ```
-3. Create `.env` file, and copy contents from `.env.example`, set `ABLY_KEY`
+3. Create `.env` file, and copy contents from `.env.example`, set `ABLY_KEY`.
 ```
 ABLY_KEY=ROOT_API_KEY_COPIED_FROM_ABLY_WEB_DASHBOARD
 ```
-4. Start laravel backend server
+4. Start laravel backend server.
 ```
 php artisan serve 
 ```
-5. Start UI server in watch/hot-reloading mode
+5. Start UI server in watch/hot-reloading mode.
 ```
 npm run watch
 ```
-6. Access the web app via http://127.0.0.1:8000
+6. Access the web app via http://127.0.0.1:8000.
 
 ## Usage
-The web app runs in two modes
+The web app works in two modes -
 
 **1. Guest Mode ( Only public rooms can be created / joined)**
 - Use room name in any format.
