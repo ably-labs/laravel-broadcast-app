@@ -1,4 +1,4 @@
-# Ably Laravel Broadcast App
+# Chat app using Ably Broadcaster+Echo
 
 Demo web-chat app using Ably Broadcaster+Echo based on laravel
 
