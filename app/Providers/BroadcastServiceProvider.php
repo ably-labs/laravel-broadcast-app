@@ -14,10 +14,6 @@ class BroadcastServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if($this->app->request->has('pusher')) {
-            config()->set('broadcasting.connections.ably.pusher_adapter', $this->app->request->get('pusher') == 1);
-        }
-
         Broadcast::routes();
         require base_path('routes/channels.php');
     }

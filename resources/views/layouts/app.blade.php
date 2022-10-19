@@ -75,14 +75,6 @@
                                 </div>
                             </li>
                         @endguest
-
-                        <li class="nav-item">
-                            @if(request()->get('pusher') == 1)
-                                <a class="nav-link" href="{{ route('listen', ['pusher' => false]) }}">Switch to Ably.js</a>
-                            @else
-                                <a class="nav-link" href="{{ route('listen', ['pusher' => true]) }}">Switch to Pusher</a>
-                            @endif
-                        </li>
                     </ul>
                 </div>
             </div>
