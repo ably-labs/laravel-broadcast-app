@@ -27,14 +27,16 @@
                     </div>
                     <input type="text" class="form-control w-100" placeholder="Client name..." v-model="userName" readonly>
                     <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="sendMessage" @keydown="typingStart">
-                    <button type="button" class="btn btn-primary" @click="sendMessage">Send client message</button>
                 </div>
                 <div v-if="channel.type === 'public'">
                     <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="broadcastMessage">
-                    <button type="button" class="btn btn-success" @click="broadcastMessage">Broadcast message</button>
                 </div>
-                <div>
-                    <button type="button" class="btn btn-danger" @click="leaveChannel">Leave channel</button>
+
+
+                <div class="chatButtonContainer">
+                    <button v-if="channel.type === 'private'" type="button" class="btn btn-alt" @click="sendMessage">Send client message</button>
+                    <button v-if="channel.type === 'public'" type="button" class="btn btn-alt" @click="broadcastMessage">Broadcast message</button>
+                    <button type="button" class="btn btn-secondary" @click="leaveChannel">Leave channel</button>
                 </div>
 
             </div>
