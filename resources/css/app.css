@@ -1,7 +1,159 @@
+:root {
+    --color-cool-black: #03020d;
+    --color-extra-light-grey: #fafafb;
+    --color-light-grey: #f5f5f6;
+    --color-mid-grey: #d9d9da;
+    --color-dark-grey: #76767c;
+    --color-charcoal-grey: #292831;
+    --color-gui-default: #0073e6;
+    --color-white: #fff;
+    --color-active-orange: #ff5416;
+    --color-red-orange: #e40000;
+    --color-gui-focus-outline: #80b9f2;
+
+    --lh-tight: 1.125;
+    --fs-btn2: 1rem;
+    --spacing-btn: 0.875rem 1.5rem;
+    --spacing-btn-secondary: 0.7813rem 1.5rem;
+
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: rgba(59,130,246,.5);
+    --tw-ring-offset-shadow: 0 0 #0000;
+    --tw-ring-shadow: 0 0 #0000;
+}
+
+body {
+    background: var(--color-mid-grey);
+}
+
 .messageContainer{
     overflow-y: auto;
     height: 400px;
 }
 .typingContainer{
     height: 20px;
+}
+.chatButtonContainer {
+    margin-top: 0.875rem;
+}
+
+.navbar {
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+
+.navbar, .nav-link {
+    font-weight: 500;
+    color: #03020d;
+}
+
+.nav-link {
+    font-size: 16px;
+}
+
+.nav-link:hover, .dropdown-item:hover {
+    color: #0867c4;
+    background-color: inherit;
+}
+
+.btn-primary {
+    transition-property: background-color,border-color,color,fill,stroke;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-duration: .15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--color-cool-black);
+    border-radius: 0.375rem;
+    font-family: NEXT Book,Arial,Helvetica,sans-serif;
+    font-weight: 500;
+    font-size: var(--fs-btn2);
+    line-height: var(--lh-tight);
+    padding: var(--spacing-btn);
+
+    border: 0;
+}
+
+.btn-primary .btn-primary:hover {
+    color: var(--color-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-active-orange);
+}
+
+.btn-primary:active, .btn-primary:focus {
+    background-color: var(--color-red-orange) !important;
+    color: var(--color-white) !important;
+    box-shadow: none;
+}
+.btn-secondary {
+    transition-property: background-color,border-color,color,fill,stroke;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-duration: .15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-color: var(--color-cool-black);
+    border-radius: 0.375rem;
+    border-width: 1.5px;
+    font-family: NEXT Book,Arial,Helvetica,sans-serif;
+    font-weight: 500;
+    font-size: var(--fs-btn2);
+    line-height: var(--lh-tight);
+    padding: var(--spacing-btn-secondary);
+}
+
+.btn-secondary, .btn-secondary:hover {
+    background-color: var(--color-white) !important;
+    color: var(--color-cool-black) !important;
+}
+
+.btn-secondary:hover {
+    border-color: var(--color-active-orange) !important;
+}
+
+.btn-secondary:active, .btn-secondary:focus {
+    background-color: var(--color-white) !important;
+    border-color: var(--color-red-orange) !important;
+    box-shadow: none;
+}
+
+.btn-secondary:focus {
+    border-color: var(--color-cool-black) !important;
+    outline: 1.5px solid var(--color-gui-focus-outline);
+    outline-offset: 0;
+}
+
+.btn-alt {
+    transition: background-position .2s;
+    border: none;
+    background: linear-gradient(61.2deg,var(--color-active-orange) 5%,#fe5215 19%,#fc4a13 27%,#f73c10 33%,#f1280a 39%,#e90f04 44%,var(--color-red-orange) 50%);
+    background-size: 200% 100%;
+    background-position: 0 0;
+    border-radius: 0.375rem;
+    font-family: NEXT Book,Arial,Helvetica,sans-serif;
+    font-weight: 500;
+    font-size: var(--fs-btn2);
+    line-height: var(--lh-tight);
+    padding: var(--spacing-btn);
+    color: var(--color-white);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.btn-alt:focus, .btn-alt:hover, .btn-alt:active {
+    background-position: 100% 0;
+    color: var(--color-white) !important;
+}
+
+.btn-alt:focus {
+    outline: 1.5px solid var(--color-gui-focus-outline);
+    outline-offset: 0;
 }

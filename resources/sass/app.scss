@@ -1,5 +1,17 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@font-face {
+    font-family: 'NEXT Book';
+    src: url('../fonts/NEXT-Book-Light-23c5ac93.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NEXT Book';
+    src: url('../fonts/NEXT-Book-Medium-7c43b50a.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
 
 // Variables
 @import 'variables';
