@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('listen');
+    return view('listen');
 });
 
 Route::get('/public-event', function (Request $request) {
@@ -36,9 +36,5 @@ Route::get('/private-event', function (Request $request) {
 Route::get('/presence-event', function (Request $request) {
     event(new PresenceMessageNotification($request->channel, $request->message));
 });
-
-Route::get('/listen', function () {
-    return view('listen');
-})->name('listen');
 
 Auth::routes(['reset' => false]);
