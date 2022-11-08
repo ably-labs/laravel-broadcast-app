@@ -3732,6 +3732,19 @@ textarea.form-control-lg {
   display: block;
 }
 
+.tab-content{
+    border-left-style: solid;
+    padding: 0.5rem;
+    border-right-style: solid;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    border-color: lightgray;
+}
+
 .navbar {
   --bs-navbar-padding-x: 0;
   --bs-navbar-padding-y: 0.5rem;
