@@ -157,3 +157,19 @@ body {
     outline: 1.5px solid var(--color-gui-focus-outline);
     outline-offset: 0;
 }
+
+.tab-content{
+    border-left-style: solid;
+    padding: 0.5rem;
+    border-right-style: solid;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    border-color: lightgray;
+}
+.messageInput{
+    margin-top: 0.5rem;
+}
