@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('ChatRoom');
+    return view('ChatRoom');
 });
 
 Route::get('/public-event', function (Request $request) {
