@@ -3744,6 +3744,9 @@ textarea.form-control-lg {
     border-bottom-left-radius: 1rem;
     border-color: lightgray;
 }
+.messageInput{
+    margin-top: 0.5rem;
+}
 
 .navbar {
   --bs-navbar-padding-x: 0;
