@@ -10,7 +10,7 @@
             </li>
 
         </ul>
-        <div class="tab-content" id="myTabContent" v-if="tabs.length">
+        <div class="tab-content mb-3 " id="myTabContent" v-if="tabs.length">
             <div v-for="channel in tabs" :class="'tab-pane fade ' + (channel === getActiveChannel() ? 'show active' : '')"
                  :id="'tab-content-' + channel.formattedName"
                  :key="'tab-content-' + channel.formattedName">
@@ -33,20 +33,27 @@
                 </div>
 
 
-                <div class="chatButtonContainer">
-                    <button v-if="channel.type === 'private'" type="button" class="btn btn-alt" @click="sendMessage">Send client message</button>
-                    <button v-if="channel.type === 'public'" type="button" class="btn btn-alt" @click="broadcastMessage">Broadcast message</button>
-                    <button type="button" class="btn btn-secondary" @click="leaveChannel">Leave channel</button>
+                <div class="row mt-3 mb-2">
+                    <div class="col-6 text-start">
+                        <button v-if="channel.type === 'private'" type="button" class="btn btn-alt" @click="sendMessage">Send client message</button>
+                        <button v-if="channel.type === 'public'" type="button" class="btn btn-alt" @click="broadcastMessage">Broadcast message</button>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button type="button" class="btn btn-secondary" @click="leaveChannel">Leave channel</button>
+                    </div>
                 </div>
 
             </div>
-            <hr />
 
         </div>
 
-        <div class="my-2">
-            <button class="btn btn-primary" @click="joinPublic">Join public channel</button>
-            <button class="btn btn-primary" @click="joinPrivate">Join private channel</button>
+        <div class="row mx-2">
+            <div class="my-2 p-0 col-6 text-start ">
+                <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="joinPublic">Join public room</button>
+            </div>
+            <div class="my-2 p-0 col-6 text-end">
+                <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="joinPrivate">Join private room</button>
+            </div>
         </div>
     </div>
 
@@ -102,7 +109,7 @@ export default {
 
     methods: {
         joinPublic(event) {
-            let channelName = prompt('Enter the public channel name (e.g. notification)');
+            let channelName = prompt('Enter the public room name (e.g. notification)');
             if (channelName?.trim().length === 0) {
                 return;
             }
@@ -117,7 +124,7 @@ export default {
 
                     this.tabs.push(channel);
                     this.setActiveChannelIndex(this.tabs.length - 1);
-                    this.pushStatusMessage(channel, "Subscribed to public channel " + channelName);
+                    this.pushStatusMessage(channel, "Subscribed to public room " + channelName);
                 })
                 .listenToAll((eventName, data) => {
                     console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
@@ -128,16 +135,16 @@ export default {
                 })
                 .error((err) => {
                     if (err?.statusCode === 401)
-                        alert("You don't have the access to join this public channel.");
+                        alert("You don't have the access to join this public room.");
                     else
-                        alert("An error occurred while trying to join a public channel, check the console for details.");
+                        alert("An error occurred while trying to join a public room, check the console for details.");
 
                     console.error(err);
                 });
         },
 
         joinPrivate(event) {
-            let channelName = prompt('Enter the private channel name (e.g. room-1, room-2)');
+            let channelName = prompt('Enter the private room name (e.g. room-1, room-2)');
             if (!channelName?.trim().length) {
                 return;
             }
@@ -152,7 +159,7 @@ export default {
 
                     this.tabs.push(channel);
                     this.setActiveChannelIndex(this.tabs.length - 1);
-                    this.pushStatusMessage(channel, "Subscribed to private channel " + channelName);
+                    this.pushStatusMessage(channel, "Subscribed to private room " + channelName);
                 })
                 .listenToAll((eventName, data) => {
                     console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
@@ -185,27 +192,27 @@ export default {
                 .error((err) => {
                     if( err === 403 || err?.statusCode === 403) {
                         if(!window.authUser)
-                            alert("You don't have the access to join this private channel, try logging into the application.");
+                            alert("You don't have the access to join this private room, try logging into the application.");
                         else
-                            alert("You don't have the access to join this private channel, try entering the channel room-1 or room-2");
+                            alert("You don't have the access to join this private room, try entering room-1 or room-2");
                     }
                     else
-                        alert("An error occurred while trying to join a private channel, check the console for details.");
+                        alert("An error occurred while trying to join a private room, check the console for details.");
 
                     console.error(err);
                 });
 
             Echo.join(channelName)
                 .subscribed(()=> {
-                    console.log(channelName, "Subscribed to presence channel " + channelName);
+                    console.log(channelName, "Subscribed to presence room " + channelName);
                 })
                 .here((members) => {
                     const channel = this.getChannelByName(channelName, 'private');
 
                     if(members.length <= 1)
-                        this.pushStatusMessage(channel, "There are no other users in this channel");
+                        this.pushStatusMessage(channel, "There are no other users in this room");
                     else
-                        this.pushStatusMessage(channel, "There are " + members.length + " users in this channel");
+                        this.pushStatusMessage(channel, "There are " + members.length + " users in this room");
 
                     channel.memberCount = members.length;
                     console.log("List of members: " + JSON.stringify(members));
@@ -214,21 +221,21 @@ export default {
                     const channel = this.getChannelByName(channelName, 'private');
 
                     if (data?.name)
-                        this.pushStatusMessage(channel, data.name + " joined the channel");
+                        this.pushStatusMessage(channel, data.name + " joined the room");
                     else
-                        this.pushStatusMessage(channel, "User " + data + " joined the channel");
+                        this.pushStatusMessage(channel, "User " + data + " joined the room");
 
-                    console.log(data, "joined channel")
+                    console.log(data, "joined room");
                 })
                 .leaving((data) => {
                     const channel = this.getChannelByName(channelName, 'private');
 
                     if (data?.name)
-                        this.pushStatusMessage(channel, data.name + " left the channel")
+                        this.pushStatusMessage(channel, data.name + " left the room")
                     else
-                        this.pushStatusMessage(channel, "User " + data + " left the channel")
+                        this.pushStatusMessage(channel, "User " + data + " left the room")
 
-                    console.log(data, "left channel")
+                    console.log(data, "left room");
                 })
                 .listenToAll((eventName, data) => {
                     console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));

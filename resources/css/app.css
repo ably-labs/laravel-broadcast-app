@@ -27,19 +27,34 @@ body {
     background: var(--color-mid-grey);
 }
 
+nav {
+    height: 84px;
+}
+
+.logo {
+    width: 56px;
+    margin-left: 60px;
+}
+
+#navbarContainer {
+    max-width: 100%;
+    width: 100%;
+}
+
 .messageContainer{
     overflow-y: auto;
-    height: 400px;
+    height: 360px;
 }
 .typingContainer{
     height: 20px;
 }
-.chatButtonContainer {
-    margin-top: 0.875rem;
-}
 
 .navbar {
     box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+
+.navbar-brand {
+    font-size: 24px;
 }
 
 .navbar, .nav-link {
@@ -48,12 +63,18 @@ body {
 }
 
 .nav-link {
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .nav-link:hover, .dropdown-item:hover {
     color: #0867c4;
     background-color: inherit;
+}
+
+.card-header {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .btn-primary {
