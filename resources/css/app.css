@@ -33,7 +33,12 @@ nav {
 
 .logo {
     width: 56px;
-    margin-left: 60px;
+}
+
+@media screen and (min-width: 576px) {
+    .logo {
+        margin-left: 60px;
+    }
 }
 
 #navbarContainer {

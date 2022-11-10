@@ -33,7 +33,7 @@
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
-                <div class="col-2 me-3 pe-5">
+                <div class="col-2 me-md-3 pe-5">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                         <span class="navbar-toggler-icon"></span>
                     </button>
