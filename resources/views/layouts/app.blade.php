@@ -29,15 +29,15 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
 
             <div id="navbarContainer" class="container">
-                <div class="col-4">
+                <div class="col-2">
                     <img src="/images/ably-logo.svg" alt="Ably Logo" class="logo">
                 </div>
-                <div class="col-4 text-center">
+                <div class="col-8 text-center">
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
-                <div class="col-4 me-3 pe-5">
+                <div class="col-2 me-3 pe-5">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                         <span class="navbar-toggler-icon"></span>
                     </button>
