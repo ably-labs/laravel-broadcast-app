@@ -9,8 +9,6 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 * Typing indicator for private rooms.
 * Join multiple rooms simultaneously.
 
-Note - Pusher mode uses legacy AblyBroadcaster + Pusher client and not recommended for use.
-
 ## Requirements
 1. PHP version >= 7.3.
 2. Node.js >= 14.x.x.
