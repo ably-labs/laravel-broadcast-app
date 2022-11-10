@@ -83,6 +83,15 @@ nav {
     font-weight: 500;
 }
 
+.card-body {
+    padding-top: 24px;
+}
+
+.button-container {
+    margin-top: 40px;
+    margin-bottom: 12px;
+}
+
 .btn-primary {
     transition-property: background-color,border-color,color,fill,stroke;
     transition-timing-function: cubic-bezier(.4,0,.2,1);

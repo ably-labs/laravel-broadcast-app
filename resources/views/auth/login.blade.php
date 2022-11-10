@@ -51,9 +51,9 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
+                        <div class="row button-container">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary w-25">
                                     {{ __('Login') }}
                                 </button>
 

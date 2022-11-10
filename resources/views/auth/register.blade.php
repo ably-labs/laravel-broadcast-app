@@ -61,9 +61,9 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
+                        <div class="row button-container">
                             <div class="register-btn">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary w-25">
                                     {{ __('Sign up') }}
                                 </button>
                             </div>
