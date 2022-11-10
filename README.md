@@ -60,5 +60,8 @@ The web app works in two modes -
 
 **Private room**
 
+<img src="docs/images/private_room.png" alt="Private room example">
 
-<img src="docs/images/private_room.png" alt="Public room example">
+**User registration**
+
+<img src="docs/images/registration.png" alt="User registration example">
