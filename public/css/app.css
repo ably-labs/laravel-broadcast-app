@@ -11035,4 +11035,8 @@ nav {
 .messageInput{
     margin-top: 0.5rem;
 }
+.register-btn {
+    display: flex;
+    justify-content: center;
+}
 
