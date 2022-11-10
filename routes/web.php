@@ -37,8 +37,4 @@ Route::get('/presence-event', function (Request $request) {
     event(new PresenceMessageNotification($request->channel, $request->message));
 });
 
-Route::get('/ChatRoom', function () {
-    return view('ChatRoom');
-})->name('ChatRoom');
-
 Auth::routes(['reset' => false]);
