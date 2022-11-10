@@ -39,7 +39,7 @@
                         <button v-if="channel.type === 'public'" type="button" class="btn btn-alt" @click="broadcastMessage">Broadcast message</button>
                     </div>
                     <div class="col-6 text-end">
-                        <button type="button" class="btn btn-secondary" @click="leaveChannel">Leave channel</button>
+                        <button type="button" class="btn btn-secondary" @click="leaveChannel">Leave room</button>
                     </div>
                 </div>
 
