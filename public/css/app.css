@@ -10890,6 +10890,7 @@ nav {
 
 .navbar-brand {
     font-size: 24px;
+    white-space: normal;
 }
 
 .navbar, .nav-link {
