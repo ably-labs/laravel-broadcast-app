@@ -217,7 +217,8 @@ nav {
     margin-right: 1rem;
 }
 .custom-title{
-    font-family: NEXT Book,Arial,Helvetica,sans-serif;;
+    font-family: NEXT Book,Arial,Helvetica,sans-serif;
+    font-size: 1.3rem !important;
 }
 
 .form-control {
