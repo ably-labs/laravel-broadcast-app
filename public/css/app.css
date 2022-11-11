@@ -11071,6 +11071,9 @@ nav {
     color: #33475b;
     background-color: #f5f8fa;
 }
+.form-check-input {
+    margin-top: 0.2em;
+}
 .form-check-input:focus {
     box-shadow: none;
 }
