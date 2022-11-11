@@ -249,7 +249,7 @@ export default {
                                     }});
                             else
                                 this.$fire({
-                                    title: 'You don\'t have the access to join this private room, try entering room-1 or room-2',
+                                    title: 'Please enter room name in the format room-1, room-2, room-3 etc. Other rooms are not accessible',
                                     buttonsStyling : false,
                                     showCancelButton : true,
                                     customClass: {
