@@ -11049,3 +11049,29 @@ nav {
     justify-content: center;
 }
 
+.form-control {
+    display: inline-block;
+    background-color: #f5f8fa;
+    width: 90%;
+    height: 40px;
+    color: #33475b;
+    border: 1px solid #cbd6e2;
+    box-sizing: border-box;
+    border-radius: 3px;
+
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.4375rem;
+    padding: 0.8125rem 1rem 0.75rem;
+}
+.form-control:focus {
+    box-shadow: none;
+    outline: none;
+    border-color: rgba(82,168,236,.8);
+    color: #33475b;
+    background-color: #f5f8fa;
+}
+.form-check-input:focus {
+    box-shadow: none;
+}
+
