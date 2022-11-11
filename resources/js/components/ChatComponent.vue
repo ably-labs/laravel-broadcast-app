@@ -109,140 +109,187 @@ export default {
 
     methods: {
         joinPublic(event) {
-            let channelName = prompt('Enter the public room name (e.g. notification)');
-            if (channelName?.trim().length === 0) {
-                return;
-            }
-            channelName = channelName.trim();
+            this.$fire({
+                input : "text",
+                title: "Enter the public room name <br> (e.g. notification)",
+                buttonsStyling : false,
+                showCancelButton : true,
+                customClass: {
+                    confirmButton: 'btn-alt-confirm',
+                    cancelButton : 'btn-secondary',
+                    title : 'custom-title'
 
-            Echo.channel(channelName)
-                .subscribed(() => {
-                    const channel = new Channel({
-                        type: 'public',
-                        name: channelName
+                },
+
+            }).then(r => {
+                let channelName = r.value
+                if (channelName?.trim().length === 0) {
+                    return;
+                }
+                channelName = channelName.trim();
+
+                Echo.channel(channelName)
+                    .subscribed(() => {
+                        const channel = new Channel({
+                            type: 'public',
+                            name: channelName
+                        });
+
+                        this.tabs.push(channel);
+                        this.setActiveChannelIndex(this.tabs.length - 1);
+                        this.pushStatusMessage(channel, "Subscribed to public room " + channelName);
+                    })
+                    .listenToAll((eventName, data) => {
+                        console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
+                    })
+                    .listen('PublicMessageNotification', (data) => {
+                        const channel = this.getChannelByName(channelName, 'public');
+                        this.pushBroadcastNotification(channel, data)
+                    })
+                    .error((err) => {
+                        if (err?.statusCode === 401)
+                            alert("You don't have the access to join this public room.");
+                        else
+                            alert("An error occurred while trying to join a public room, check the console for details.");
+
+                        console.error(err);
                     });
-
-                    this.tabs.push(channel);
-                    this.setActiveChannelIndex(this.tabs.length - 1);
-                    this.pushStatusMessage(channel, "Subscribed to public room " + channelName);
-                })
-                .listenToAll((eventName, data) => {
-                    console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
-                })
-                .listen('PublicMessageNotification', (data) => {
-                    const channel = this.getChannelByName(channelName, 'public');
-                    this.pushBroadcastNotification(channel, data)
-                })
-                .error((err) => {
-                    if (err?.statusCode === 401)
-                        alert("You don't have the access to join this public room.");
-                    else
-                        alert("An error occurred while trying to join a public room, check the console for details.");
-
-                    console.error(err);
-                });
+            });
         },
 
         joinPrivate(event) {
-            let channelName = prompt('Enter the private room name (e.g. room-1, room-2)');
-            if (!channelName?.trim().length) {
-                return;
-            }
-            channelName = channelName.trim();
+            this.$fire({
+                input : "text",
+                title: "Enter the private room name <br>  (e.g. room-1, room-2)",
+               buttonsStyling : false,
+               showCancelButton : true,
+               customClass: {
+                   confirmButton: 'btn-alt-confirm',
+                   cancelButton : 'btn-secondary',
+                   title : 'custom-title'
 
-            Echo.private(channelName)
-                .subscribed(() => {
-                    const channel = new Channel({
-                        type: 'private',
-                        name: channelName
+               },
+
+            }).then(r => {
+                let channelName = r.value
+                if (!channelName?.trim().length) {
+                    return;
+                }
+                channelName = channelName.trim();
+
+                Echo.private(channelName)
+                    .subscribed(() => {
+                        const channel = new Channel({
+                            type: 'private',
+                            name: channelName
+                        });
+
+                        this.tabs.push(channel);
+                        this.setActiveChannelIndex(this.tabs.length - 1);
+                        this.pushStatusMessage(channel, "Subscribed to private room " + channelName);
+                    })
+                    .listenToAll((eventName, data) => {
+                        console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
+                    })
+                    .listen('PrivateMessageNotification', (data) => {
+                        const channel = this.getChannelByName(channelName, 'private');
+                        this.pushBroadcastNotification(channel, data)
+                    })
+                    .listenForWhisper('message', (data) => {
+                        const channel = this.getChannelByName(channelName, 'private');
+                        this.pushUserMessage(channel, data.message, data.user);
+                    })
+                    .listenForWhisper('typing', (data) => {
+                        let user = data.user;
+                        if(!user)
+                            return;
+
+                        const channel = this.getChannelByName(channelName, 'private');
+                        clearTimeout(channel.typingStopEvents[user]);
+
+                        if(!channel.typingNames.includes(user))
+                            channel.typingNames.push(user);
+
+                        channel.typingStopEvents[user] = setTimeout(() => {
+                            delete channel.typingStopEvents[user];
+                            channel.typingNames = channel.typingNames.filter(e => e !== user);
+                        }, 1500);
+
+                    })
+                    .error((err) => {
+                        if( err === 403 || err?.statusCode === 403) {
+                            if(!window.authUser)
+                                this.$fire({
+                                    title: 'You don\'t have the access to join this private room, try logging into the application.',
+                                    buttonsStyling : false,
+                                    showCancelButton : true,
+                                    customClass: {
+                                        confirmButton: 'btn-alt-confirm',
+                                        cancelButton : 'btn-secondary',
+                                        title : 'custom-title'
+
+                                    }});
+                            else
+                                this.$fire({
+                                    title: 'You don\'t have the access to join this private room, try entering room-1 or room-2',
+                                    buttonsStyling : false,
+                                    showCancelButton : true,
+                                    customClass: {
+                                        confirmButton: 'btn-alt-confirm',
+                                        cancelButton : 'btn-secondary',
+                                        title : 'custom-title'
+
+                                    }});
+                        }
+                        else
+                            alert("An error occurred while trying to join a private room, check the console for details.");
+
+                        console.error(err);
                     });
 
-                    this.tabs.push(channel);
-                    this.setActiveChannelIndex(this.tabs.length - 1);
-                    this.pushStatusMessage(channel, "Subscribed to private room " + channelName);
-                })
-                .listenToAll((eventName, data) => {
-                    console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
-                })
-                .listen('PrivateMessageNotification', (data) => {
-                    const channel = this.getChannelByName(channelName, 'private');
-                    this.pushBroadcastNotification(channel, data)
-                })
-                .listenForWhisper('message', (data) => {
-                    const channel = this.getChannelByName(channelName, 'private');
-                    this.pushUserMessage(channel, data.message, data.user);
-                })
-                .listenForWhisper('typing', (data) => {
-                    let user = data.user;
-                    if(!user)
-                        return;
+                Echo.join(channelName)
+                    .subscribed(()=> {
+                        console.log(channelName, "Subscribed to presence room " + channelName);
+                    })
+                    .here((members) => {
+                        const channel = this.getChannelByName(channelName, 'private');
 
-                    const channel = this.getChannelByName(channelName, 'private');
-                    clearTimeout(channel.typingStopEvents[user]);
-
-                    if(!channel.typingNames.includes(user))
-                        channel.typingNames.push(user);
-
-                    channel.typingStopEvents[user] = setTimeout(() => {
-                        delete channel.typingStopEvents[user];
-                        channel.typingNames = channel.typingNames.filter(e => e !== user);
-                    }, 1500);
-
-                })
-                .error((err) => {
-                    if( err === 403 || err?.statusCode === 403) {
-                        if(!window.authUser)
-                            alert("You don't have the access to join this private room, try logging into the application.");
+                        if(members.length <= 1)
+                            this.pushStatusMessage(channel, "There are no other users in this room");
                         else
-                            alert("You don't have the access to join this private room, try entering room-1 or room-2");
-                    }
-                    else
-                        alert("An error occurred while trying to join a private room, check the console for details.");
+                            this.pushStatusMessage(channel, "There are " + members.length + " users in this room");
 
-                    console.error(err);
-                });
+                        channel.memberCount = members.length;
+                        console.log("List of members: " + JSON.stringify(members));
+                    })
+                    .joining((data) => {
+                        const channel = this.getChannelByName(channelName, 'private');
 
-            Echo.join(channelName)
-                .subscribed(()=> {
-                    console.log(channelName, "Subscribed to presence room " + channelName);
-                })
-                .here((members) => {
-                    const channel = this.getChannelByName(channelName, 'private');
+                        if (data?.name)
+                            this.pushStatusMessage(channel, data.name + " joined the room");
+                        else
+                            this.pushStatusMessage(channel, "User " + data + " joined the room");
 
-                    if(members.length <= 1)
-                        this.pushStatusMessage(channel, "There are no other users in this room");
-                    else
-                        this.pushStatusMessage(channel, "There are " + members.length + " users in this room");
+                        console.log(data, "joined room");
+                    })
+                    .leaving((data) => {
+                        const channel = this.getChannelByName(channelName, 'private');
 
-                    channel.memberCount = members.length;
-                    console.log("List of members: " + JSON.stringify(members));
-                })
-                .joining((data) => {
-                    const channel = this.getChannelByName(channelName, 'private');
+                        if (data?.name)
+                            this.pushStatusMessage(channel, data.name + " left the room")
+                        else
+                            this.pushStatusMessage(channel, "User " + data + " left the room")
 
-                    if (data?.name)
-                        this.pushStatusMessage(channel, data.name + " joined the room");
-                    else
-                        this.pushStatusMessage(channel, "User " + data + " joined the room");
+                        console.log(data, "left room");
+                    })
+                    .listenToAll((eventName, data) => {
+                        console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
+                    })
+                    .error((err)=> {
+                        console.error(err)
+                    })
+           });
 
-                    console.log(data, "joined room");
-                })
-                .leaving((data) => {
-                    const channel = this.getChannelByName(channelName, 'private');
-
-                    if (data?.name)
-                        this.pushStatusMessage(channel, data.name + " left the room")
-                    else
-                        this.pushStatusMessage(channel, "User " + data + " left the room")
-
-                    console.log(data, "left room");
-                })
-                .listenToAll((eventName, data) => {
-                    console.log("Event ::  "+ eventName + ", data is ::" + JSON.stringify(data));
-                })
-                .error((err)=> {
-                    console.error(err)
-                })
         },
 
         sendMessage(event) {
@@ -374,4 +421,8 @@ export default {
     }
 
 }
+import Vue from "vue"
+import VueSimpleAlert from "vue-simple-alert";
+
+Vue.use(VueSimpleAlert);
 </script>

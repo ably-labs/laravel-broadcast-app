@@ -163,7 +163,7 @@ nav {
     outline-offset: 0;
 }
 
-.btn-alt {
+.btn-alt, .btn-alt-confirm {
     transition: background-position .2s;
     border: none;
     background: linear-gradient(61.2deg,var(--color-active-orange) 5%,#fe5215 19%,#fc4a13 27%,#f73c10 33%,#f1280a 39%,#e90f04 44%,var(--color-red-orange) 50%);
@@ -184,12 +184,12 @@ nav {
 
 }
 
-.btn-alt:focus, .btn-alt:hover, .btn-alt:active {
+.btn-alt:focus, .btn-alt:hover, .btn-alt:active, .btn-alt-confirm:focus, .btn-alt-confirm:hover,.btn-alt-confirm:active  {
     background-position: 100% 0;
     color: var(--color-white) !important;
 }
 
-.btn-alt:focus {
+.btn-alt:focus, .btn-alt-confirm:focus {
     outline: 1.5px solid var(--color-gui-focus-outline);
     outline-offset: 0;
 }
@@ -212,6 +212,12 @@ nav {
 .register-btn {
     display: flex;
     justify-content: center;
+}
+.btn-alt-confirm{
+    margin-right: 1rem;
+}
+.custom-title{
+    font-family: NEXT Book,Arial,Helvetica,sans-serif;;
 }
 
 .form-control {
