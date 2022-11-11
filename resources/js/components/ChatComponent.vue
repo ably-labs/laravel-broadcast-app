@@ -158,6 +158,24 @@ export default {
         },
 
         joinPrivate(event) {
+            if(!window.authUser)
+                this.$fire({
+                    title: 'You are a guest user, please sign up for joining private channels.',
+                    buttonsStyling : false,
+                    showCancelButton : true,
+                    confirmButtonText : "Yes, I want to register",
+                    cancelButtonText : "Stay on the homepage",
+                    customClass: {
+                        confirmButton: 'btn-alt-confirm btn-confirm-custom-event',
+                        cancelButton : 'btn-secondary',
+                        title : 'custom-title'
+
+                    }}).then(function (result) {
+                    if (result.value) {
+                        window.location = "/register"
+                    }
+                });
+            else
             this.$fire({
                 input : "text",
                 title: "Enter the private room name <br>  (e.g. room-1, room-2)",
