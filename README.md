@@ -28,15 +28,19 @@ npm install
 ```
 ABLY_KEY=ROOT_API_KEY_COPIED_FROM_ABLY_WEB_DASHBOARD
 ```
-4. Start laravel backend server.
+4. Generate application encryption key
+```
+php artisan key:generate
+```
+5. Start laravel backend server.
 ```
 php artisan serve 
 ```
-5. Start UI server in watch/hot-reloading mode.
+6. Start UI server in watch/hot-reloading mode.
 ```
 npm run watch
 ```
-6. Access the web app via http://127.0.0.1:8000.
+7. Access the web app via http://127.0.0.1:8000.
 
 ## Usage
 The web app works in two modes -
