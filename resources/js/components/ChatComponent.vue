@@ -353,10 +353,10 @@ export default {
             if(!message)
                 return;
 
-            const channel = this.getActiveChannel().name;
+            const channelName = this.getActiveChannel().name;
 
             const broadcastUrl = window.location.origin + "/api/public-event";
-            axios.get(broadcastUrl, { params: { message, channel}});
+            axios.post(broadcastUrl, { channelName, message });
 
             this.message = null;
         },

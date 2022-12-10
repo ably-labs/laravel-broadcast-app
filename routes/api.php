@@ -33,15 +33,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Throttle to 60 requests/1 minute per machine.
 // This is generally to prevent DOS attack/message spamming on public channels.
 // https://dev.to/aliadhillon/new-simple-way-of-creating-custom-rate-limiters-in-laravel-8-65n.
-Route::middleware('throttle:60,1')->get('/public-event', function (Request $request) {
-    broadcast(new PublicMessageEvent($request->channel, $request->message));
+Route::middleware('throttle:60,1')->post('/public-event', function (Request $request) {
+    $channelName = $request->post('channelName');
+    $message = $request->post('message');
+    broadcast(new PublicMessageEvent( $channelName, $message ));
 });
 
 // Private broadcast for an authenticated user.
-Route::get('/private-event', function (Request $request) {
+Route::post('/private-event', function (Request $request) {
+    $channelName = $request->post('channelName');
+    $message = $request->post('message');
     if($request->input('to_others')) {
-        broadcast(new PrivateMessageEvent($request->channel, $request->message))->toOthers();
+        broadcast(new PrivateMessageEvent($channelName, $message))->toOthers();
     } else {
-        broadcast(new PrivateMessageEvent($request->channel, $request->message));
+        broadcast(new PrivateMessageEvent($channelName, $message));
     }
 })->middleware('auth'); // Only authenticated users are allowed (https://laravel.com/docs/authentication#protecting-routes)
