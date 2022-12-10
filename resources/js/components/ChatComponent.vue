@@ -355,7 +355,7 @@ export default {
 
             const channel = this.getActiveChannel().name;
 
-            const broadcastUrl = window.location.origin + "/public-event";
+            const broadcastUrl = window.location.origin + "/api/public-event";
             axios.get(broadcastUrl, { params: { message, channel}});
 
             this.message = null;
