@@ -8,7 +8,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PresenceMessageEvent implements ShouldBroadcast
+class PublicMessageEvent implements ShouldBroadcast
 {
     public $channel;
     public $message;
