@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 
 class PublicMessageEvent implements ShouldBroadcast
 {
-    public $channel;
+    public $channelName;
     public $message;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -20,9 +20,9 @@ class PublicMessageEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($channel, $message)
+    public function __construct($channelName, $message)
     {
-        $this->channel = $channel;
+        $this->channelName = $channelName;
         $this->message = $message;
     }
 
@@ -33,6 +33,6 @@ class PublicMessageEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return [new Channel($this->channel)];
+        return [new Channel($this->channelName)];
     }
 }
