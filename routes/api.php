@@ -21,15 +21,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Public broadcast for a guest user.
-// Throttle to 60 requests per 1 minute per machine
-// This is generally to prevent DOS/DDOS/message spamming from happening
-// https://dev.to/aliadhillon/new-simple-way-of-creating-custom-rate-limiters-in-laravel-8-65n
+// Throttle to 60 requests per 1 minute per machine.
+// This is generally to prevent DOS/DDOS/message spamming on public channels.
+// https://dev.to/aliadhillon/new-simple-way-of-creating-custom-rate-limiters-in-laravel-8-65n.
 Route::middleware('throttle:60,1')->get('/public-event', function (Request $request) {
     broadcast(new PublicMessageEvent($request->channel, $request->message));
 });
 
 // Private broadcast for a authenticated user.
-// This alternative option to send messages is slow compared to client-events 
+// This alternative option to send messages is slow compared to client-events. 
 // since it goes through laravel before being sent to ably.
 // This allows message filtering, throttling and persistent storage before being sent.
 Route::get('/private-event', function (Request $request) {

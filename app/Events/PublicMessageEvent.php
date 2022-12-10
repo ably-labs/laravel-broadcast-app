@@ -28,7 +28,8 @@ class PublicMessageEvent implements ShouldBroadcast
 
     /**
      * Get the channels the event should broadcast on.
-     *
+     * https://laravel.com/docs/broadcasting#model-broadcasting-channel-conventions
+     * 
      * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
