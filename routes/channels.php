@@ -25,7 +25,7 @@ Broadcast::channel('notification', function ($user) {
 
 Broadcast::channel('room-{roomId}', function ( User $user, $roomId) { // for presence channel return data about user -> https://laravel.com/docs/9.x/broadcasting#authorizing-presence-channels
     if($user->canJoinRoom($roomId))
-        return ['id' => $user->id, 'name' => $user->name, 'capability' => ["subscribe", "history", "channel-metadata", "presence", "publish"]];
+        return ['id' => $user->id, 'name' => $user->name, 'ably-capability' => ["subscribe", "history", "channel-metadata", "presence", "publish"]];
 
     return false;
 });
