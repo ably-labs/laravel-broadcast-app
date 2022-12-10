@@ -142,7 +142,7 @@ export default {
                     .listenToAll((eventName, data) => {
                         console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
                     })
-                    .listen('PublicMessageNotification', (data) => {
+                    .listen('PublicMessageEvent', (data) => {
                         const channel = this.getChannelByName(channelName, 'public');
                         this.pushBroadcastNotification(channel, data)
                     })
@@ -209,7 +209,7 @@ export default {
                     .listenToAll((eventName, data) => {
                         console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
                     })
-                    .listen('PrivateMessageNotification', (data) => {
+                    .listen('PrivateMessageEvent', (data) => {
                         const channel = this.getChannelByName(channelName, 'private');
                         this.pushBroadcastNotification(channel, data)
                     })

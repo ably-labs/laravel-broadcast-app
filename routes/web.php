@@ -1,8 +1,8 @@
 <?php
 
-use App\Events\PresenceMessageNotification;
-use App\Events\PrivateMessageNotification;
-use App\Events\PublicMessageNotification;
+use App\Events\PresenceMessageEvent;
+use App\Events\PrivateMessageEvent;
+use App\Events\PublicMessageEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,18 +23,18 @@ Route::get('/', function () {
 });
 
 Route::get('/public-event', function (Request $request) {
-    event(new PublicMessageNotification($request->channel, $request->message));
+    event(new PublicMessageEvent($request->channel, $request->message));
 });
 
 Route::get('/private-event', function (Request $request) {
     if($request->input('to_others'))
-        broadcast(new PrivateMessageNotification($request->channel, $request->message))->toOthers();
+        broadcast(new PrivateMessageEvent($request->channel, $request->message))->toOthers();
     else
-        event(new PrivateMessageNotification($request->channel, $request->message));
+        event(new PrivateMessageEvent($request->channel, $request->message));
 });
 
 Route::get('/presence-event', function (Request $request) {
-    event(new PresenceMessageNotification($request->channel, $request->message));
+    event(new PresenceMessageEvent($request->channel, $request->message));
 });
 
 Auth::routes(['reset' => false]);

@@ -2,14 +2,13 @@
 
 namespace App\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PresenceMessageNotification implements ShouldBroadcast
+class PresenceMessageEvent implements ShouldBroadcast
 {
     public $channel;
     public $message;
@@ -34,6 +33,6 @@ class PresenceMessageNotification implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PresenceChannel($this->channel);
+        return [new Channel($this->channel)];
     }
 }
