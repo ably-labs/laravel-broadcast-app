@@ -24,8 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Publishing message through laravel to ably allows request throttling, and filtering + persistent storage for messages.
 // Public channel allows to publish messages only through laravel to ably.
 // Private/Presence channels allows to send/publish messages in two ways 
-// 1. Through laravel to ably [ client1 -> laravel -> ably -> client2]
-// 2. Through client-events [ client1 -> ably -> client2]
+// 1. Through laravel to ably [ echo-client1 -> laravel -> ably -> echo-client2, echo-client3, echo-client4... ]
+// 2. Through client-events [ echo-client1 -> ably -> echo-client2, echo-client3, echo-client4... ]
 // Publishing via client-events is faster than through laravel, since there is no intermediate party involved.
 // Read more about client-events => https://laravel.com/docs/broadcasting#client-events
 

@@ -23,7 +23,7 @@ import Echo from '@ably/laravel-echo';
 
 window.Ably = require('ably');
 
-// Create echo instance wrapper around ably client.
+// Create echo client instance around ably-js.
 window.Echo = new Echo({
     broadcaster: 'ably',
 });

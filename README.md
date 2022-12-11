@@ -58,12 +58,12 @@ The web app works in two modes -
 
 **1. Guest Mode ( Only public rooms can be created / joined)**
 - Use room name in any format.
-- In public rooms, messages are published via server (client can't publish messages via echo).
+- In public rooms, messages are published via laravel server to ably (client can't publish messages directly through echo).
 
 **2. User Mode ( Private rooms can be created / joined)**
 - If user signed up and logged in into the Laravel app, it can create/join a private room.
 - The required room prefix is `room-<id>`, as defined in `routes/rooms.php`.
-- In private rooms, messages are published via Laravel Echo from client-side. 
+- In private rooms, messages are published through Laravel Echo from client-side. 
 
 ## Screenshots
 
