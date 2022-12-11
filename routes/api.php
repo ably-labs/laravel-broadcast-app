@@ -30,8 +30,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Read more about client-events => https://laravel.com/docs/broadcasting#client-events
 
 // Public broadcast for a guest user.
-// Throttle to 60 requests/1 minute per machine.
+// Throttle to 60 requests/1 minute per ip address.
 // This is generally to prevent DOS attack/message spamming on public channels.
+// If using reverse proxy, make sure to configure IP properly, since all incoming requests will have same IP address.
 // https://dev.to/aliadhillon/new-simple-way-of-creating-custom-rate-limiters-in-laravel-8-65n.
 Route::middleware('throttle:60,1')->post('/public-event', function (Request $request) {
     $channelName = $request->post('channelName');
@@ -40,6 +41,7 @@ Route::middleware('throttle:60,1')->post('/public-event', function (Request $req
 });
 
 // Private broadcast for an authenticated user.
+// If throttling is enabled, it will be per user session insetad of ip adddress.
 Route::post('/private-event', function (Request $request) {
     $channelName = $request->post('channelName');
     $message = $request->post('message');
