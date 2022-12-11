@@ -26,17 +26,17 @@
                         Members in chat: {{channel.memberCount}}
                     </div>
                     <input type="text" class="form-control w-100" placeholder="Client name..." v-model="userName" readonly>
-                    <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="sendMessage" @keydown="typingStart">
+                    <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="publishMessageOnPrivateCahnnel" @keydown="publishTypingEvent">
                 </div>
                 <div v-if="channel.type === 'public'">
-                    <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="broadcastMessage">
+                    <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="broadcastMessageOnPublicChannel">
                 </div>
 
 
                 <div class="row mt-3 mb-2">
                     <div class="col-6 text-start">
-                        <button v-if="channel.type === 'private'" type="button" class="btn btn-alt" @click="sendMessage">Send client message</button>
-                        <button v-if="channel.type === 'public'" type="button" class="btn btn-alt" @click="broadcastMessage">Broadcast message</button>
+                        <button v-if="channel.type === 'private'" type="button" class="btn btn-alt" @click="publishMessageOnPrivateCahnnel">Send client message</button>
+                        <button v-if="channel.type === 'public'" type="button" class="btn btn-alt" @click="broadcastMessageOnPublicChannel">Broadcast message</button>
                     </div>
                     <div class="col-6 text-end">
                         <button type="button" class="btn btn-secondary" @click="leaveChannel">Leave room</button>
@@ -49,10 +49,10 @@
 
         <div class="row mx-2">
             <div class="my-2 p-0 col-6 text-start ">
-                <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="joinPublic">Join public room</button>
+                <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="subscribeToPubliChannel">Join public room</button>
             </div>
             <div class="my-2 p-0 col-6 text-end">
-                <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="joinPrivate">Join private room</button>
+                <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="subscribeToPrivateAndPresenceChannel">Join private room</button>
             </div>
         </div>
     </div>
@@ -108,7 +108,7 @@ export default {
     },
 
     methods: {
-        joinPublic(event) {
+        subscribeToPubliChannel(event) {
             this.$fire({
                 input : "text",
                 title: "Enter the public room name <br> (e.g. notification)",
@@ -128,6 +128,7 @@ export default {
                 }
                 channelName = channelName.trim();
 
+                // Register and subsribe to events on the public channel.
                 Echo.channel(channelName)
                     .subscribed(() => {
                         const channel = new Channel({
@@ -137,14 +138,14 @@ export default {
 
                         this.tabs.push(channel);
                         this.setActiveChannelIndex(this.tabs.length - 1);
-                        this.pushStatusMessage(channel, "Subscribed to public room " + channelName);
+                        this.updateStatusMessageOnUI(channel, "Subscribed to public room " + channelName);
                     })
                     .listenToAll((eventName, data) => {
                         console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
                     })
                     .listen('PublicMessageEvent', (data) => {
                         const channel = this.getChannelByName(channelName, 'public');
-                        this.pushBroadcastNotification(channel, data)
+                        this.updateBroadcastNotificationOnUI(channel, data)
                     })
                     .error((err) => {
                         if (err?.statusCode === 401)
@@ -157,7 +158,7 @@ export default {
             });
         },
 
-        joinPrivate(event) {
+        subscribeToPrivateAndPresenceChannel(event) {
             if(!window.authUser)
                 this.$fire({
                     title: 'You are a guest user, please sign up for joining private channels.',
@@ -195,6 +196,7 @@ export default {
                 }
                 channelName = channelName.trim();
 
+                // Register and subsribe to events on the private channel.
                 Echo.private(channelName)
                     .subscribed(() => {
                         const channel = new Channel({
@@ -204,18 +206,18 @@ export default {
 
                         this.tabs.push(channel);
                         this.setActiveChannelIndex(this.tabs.length - 1);
-                        this.pushStatusMessage(channel, "Subscribed to private room " + channelName);
+                        this.updateStatusMessageOnUI(channel, "Subscribed to private room " + channelName);
                     })
                     .listenToAll((eventName, data) => {
                         console.log("Event ::  " + eventName + ", data is ::" + JSON.stringify(data));
                     })
                     .listen('PrivateMessageEvent', (data) => {
                         const channel = this.getChannelByName(channelName, 'private');
-                        this.pushBroadcastNotification(channel, data)
+                        this.updateBroadcastNotificationOnUI(channel, data)
                     })
                     .listenForWhisper('message', (data) => {
                         const channel = this.getChannelByName(channelName, 'private');
-                        this.pushUserMessage(channel, data.message, data.user);
+                        this.updateUserMessageOnUI(channel, data.message, data.user);
                     })
                     .listenForWhisper('typing', (data) => {
                         let user = data.user;
@@ -265,6 +267,7 @@ export default {
                         console.error(err);
                     });
 
+                // Register and subsribe to presence changes on presence channel.
                 Echo.join(channelName)
                     .subscribed(()=> {
                         console.log(channelName, "Subscribed to presence room " + channelName);
@@ -273,9 +276,9 @@ export default {
                         const channel = this.getChannelByName(channelName, 'private');
 
                         if(members.length <= 1)
-                            this.pushStatusMessage(channel, "There are no other users in this room");
+                            this.updateStatusMessageOnUI(channel, "There are no other users in this room");
                         else
-                            this.pushStatusMessage(channel, "There are " + members.length + " users in this room");
+                            this.updateStatusMessageOnUI(channel, "There are " + members.length + " users in this room");
 
                         channel.memberCount = members.length;
                         console.log("List of members: " + JSON.stringify(members));
@@ -284,9 +287,9 @@ export default {
                         const channel = this.getChannelByName(channelName, 'private');
 
                         if (data?.name)
-                            this.pushStatusMessage(channel, data.name + " joined the room");
+                            this.updateStatusMessageOnUI(channel, data.name + " joined the room");
                         else
-                            this.pushStatusMessage(channel, "User " + data + " joined the room");
+                            this.updateStatusMessageOnUI(channel, "User " + data + " joined the room");
 
                         console.log(data, "joined room");
                     })
@@ -294,9 +297,9 @@ export default {
                         const channel = this.getChannelByName(channelName, 'private');
 
                         if (data?.name)
-                            this.pushStatusMessage(channel, data.name + " left the room")
+                            this.updateStatusMessageOnUI(channel, data.name + " left the room")
                         else
-                            this.pushStatusMessage(channel, "User " + data + " left the room")
+                            this.updateStatusMessageOnUI(channel, "User " + data + " left the room")
 
                         console.log(data, "left room");
                     })
@@ -310,7 +313,8 @@ export default {
 
         },
 
-        sendMessage(event) {
+        // Uses to send message to other clients using client-events.
+        publishMessageOnPrivateCahnnel(event) {
             const userName = this.userName?.trim();
             const message = this.message?.trim();
             if(!message || !userName)
@@ -323,7 +327,7 @@ export default {
                 message: message
             }, (err) => {
                 if(!err && !Echo.options.echoMessages) {
-                    this.pushUserMessage(channel, message, userName);
+                    this.updateUserMessageOnUI(channel, message, userName);
                 }
             });
             this.message = null;
@@ -332,7 +336,7 @@ export default {
         /**
          * @param event KeyboardEvent
          */
-        typingStart(event) {
+        publishTypingEvent(event) {
             if (this.throttleTyping || event.key.length !== 1)
                 return;
 
@@ -348,7 +352,8 @@ export default {
             }, 1000);
         },
 
-        broadcastMessage(event) {
+        // Message is published/broadcasted using laravel public API endpoint - /api/public-event
+        broadcastMessageOnPublicChannel(event) {
             const message = this.message?.trim();
             if(!message)
                 return;
@@ -361,6 +366,7 @@ export default {
             this.message = null;
         },
 
+        // Unsubsribe and leaves the channel
         leaveChannel(event) {
             const channel = this.getActiveChannel();
             Echo.leave(channel.name);
@@ -375,7 +381,7 @@ export default {
             }
         },
 
-        pushStatusMessage(channel, message) {
+        updateStatusMessageOnUI(channel, message) {
             channel.messages.push(new Message({
                 type: 'status',
                 content: message
@@ -384,7 +390,7 @@ export default {
             this.scrollToBottom();
         },
 
-        pushUserMessage(channel, message, user) {
+        updateUserMessageOnUI(channel, message, user) {
             channel.messages.push(new Message({
                 type: 'user',
                 user: user,
@@ -394,7 +400,7 @@ export default {
             this.scrollToBottom();
         },
 
-        pushBroadcastNotification(channel, data) {
+        updateBroadcastNotificationOnUI(channel, data) {
             channel.messages.push(new Message({
                 type: 'broadcast',
                 content: data.message
