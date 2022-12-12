@@ -49,7 +49,7 @@
 
         <div class="row mx-2">
             <div class="my-2 p-0 col-6 text-start ">
-                <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="subscribeToPubliChannel">Join public room</button>
+                <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="subscribeToPublicChannel">Join public room</button>
             </div>
             <div class="my-2 p-0 col-6 text-end">
                 <button class="btn btn-primary" style="width: 380px; max-width: 90%" @click="subscribeToPrivateAndPresenceChannel">Join private room</button>
@@ -108,7 +108,7 @@ export default {
     },
 
     methods: {
-        subscribeToPubliChannel(event) {
+        subscribeToPublicChannel(event) {
             this.$fire({
                 input : "text",
                 title: "Enter the public room name <br> (e.g. notification)",
