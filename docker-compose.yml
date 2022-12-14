@@ -1,0 +1,13 @@
+version: '3'
+services:
+  laravel:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: laravel-broadcast-app
+    restart: always
+    volumes:
+        - ./app:/app/app
+        - ./.env:/app/.env
+    ports:
+      - 8000:80
