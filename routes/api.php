@@ -41,7 +41,7 @@ Route::middleware('throttle:60,1')->post('/public-event', function (Request $req
 });
 
 // Private broadcast for an authenticated user.
-// If throttling is enabled, it will be per user session insetad of ip adddress.
+// If request throttling is enabled, it will be per user session instead of ip adddress.
 // This route is currently unused, client-events are used instead.
 Route::post('/private-event', function (Request $request) {
     $channelName = $request->post('channelName');

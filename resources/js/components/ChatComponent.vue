@@ -26,7 +26,7 @@
                         Members in chat: {{channel.memberCount}}
                     </div>
                     <input type="text" class="form-control w-100" placeholder="Client name..." v-model="userName" readonly>
-                    <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="publishMessageOnPrivateCahnnel" @keydown="publishTypingEvent">
+                    <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="publishMessageOnPrivateChannel" @keydown="publishTypingEvent">
                 </div>
                 <div v-if="channel.type === 'public'">
                     <input type="text" class="form-control w-100 messageInput" placeholder="Message..." v-model="message" @keydown.enter="broadcastMessageOnPublicChannel">
@@ -35,7 +35,7 @@
 
                 <div class="row mt-3 mb-2">
                     <div class="col-6 text-start">
-                        <button v-if="channel.type === 'private'" type="button" class="btn btn-alt" @click="publishMessageOnPrivateCahnnel">Send client message</button>
+                        <button v-if="channel.type === 'private'" type="button" class="btn btn-alt" @click="publishMessageOnPrivateChannel">Send client message</button>
                         <button v-if="channel.type === 'public'" type="button" class="btn btn-alt" @click="broadcastMessageOnPublicChannel">Broadcast message</button>
                     </div>
                     <div class="col-6 text-end">
@@ -128,7 +128,7 @@ export default {
                 }
                 channelName = channelName.trim();
 
-                // Register and subsribe to events on the public channel.
+                // Register and subscribe to events on the public channel.
                 Echo.channel(channelName)
                     .subscribed(() => {
                         const channel = new Channel({
@@ -196,7 +196,7 @@ export default {
                 }
                 channelName = channelName.trim();
 
-                // Register and subsribe to events on the private channel.
+                // Register and subscribe to events on the private channel.
                 Echo.private(channelName)
                     .subscribed(() => {
                         const channel = new Channel({
@@ -267,7 +267,7 @@ export default {
                         console.error(err);
                     });
 
-                // Register and subsribe to presence changes on presence channel.
+                // Register and subscribe to presence changes on presence channel.
                 Echo.join(channelName)
                     .subscribed(()=> {
                         console.log(channelName, "Subscribed to presence room " + channelName);
@@ -314,7 +314,7 @@ export default {
         },
 
         // Uses to send message to other clients using client-events.
-        publishMessageOnPrivateCahnnel(event) {
+        publishMessageOnPrivateChannel(event) {
             const userName = this.userName?.trim();
             const message = this.message?.trim();
             if(!message || !userName)
@@ -366,7 +366,7 @@ export default {
             this.message = null;
         },
 
-        // Unsubsribe and leaves the channel
+        // Unsubscribe and leaves the channel
         leaveChannel(event) {
             const channel = this.getActiveChannel();
             Echo.leave(channel.name);
