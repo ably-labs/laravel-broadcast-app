@@ -353,7 +353,7 @@ export default {
         },
 
         // Message is published/broadcasted using laravel public API endpoint - /api/public-event
-        broadcastMessageOnPublicChannel(event) {
+        broadcastMessageOnPublicChannel() {
             const message = this.message?.trim();
             if(!message)
                 return;
