@@ -3,15 +3,14 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PresenceMessageNotification implements ShouldBroadcast
+class PrivateMessageEvent implements ShouldBroadcast
 {
-    public $channel;
+    public $channelName;
     public $message;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -21,19 +20,20 @@ class PresenceMessageNotification implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($channel, $message)
+    public function __construct($channelName, $message)
     {
-        $this->channel = $channel;
+        $this->channelName = $channelName;
         $this->message = $message;
     }
 
     /**
      * Get the channels the event should broadcast on.
-     *
+     * https://laravel.com/docs/broadcasting#model-broadcasting-channel-conventions
+     * 
      * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
     {
-        return new PresenceChannel($this->channel);
+        return [new PrivateChannel($this->channelName)];
     }
 }

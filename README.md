@@ -17,42 +17,53 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 
 1. Clone the repository.
 ```
-git clone https://github.com/ably-labs/laravel-broadcast-app
+  git clone https://github.com/ably-labs/laravel-broadcast-app
 ```
 2. Install dependencies.
 ```
-composer install
-npm install
+  cd laravel-broadcast-app
+  composer install
+  npm install
 ```
-3. Create `.env` file, and copy contents from `.env.example`, set `ABLY_KEY`.
+3. Create `.env` file at root. Copy contents from `.env.example` into `.env`.
+4. Set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) in .env file .
 ```
-ABLY_KEY=ROOT_API_KEY_COPIED_FROM_ABLY_WEB_DASHBOARD
+  ABLY_KEY=ROOT_API_KEY_COPIED_FROM_ABLY_WEB_DASHBOARD
 ```
-4. Generate application encryption key
+5. Generate application encryption key.
 ```
-php artisan key:generate
+  php artisan key:generate
 ```
-5. Start laravel backend server.
+6. Create simple sqlite db file.
 ```
-php artisan serve 
+  touch database/database.sqlite // On linux
+  New-Item database\\database.sqlite -type file // On windows poweshell
 ```
-6. Start UI server in watch/hot-reloading mode.
+7. Run all of db migrations.
 ```
-npm run watch
+  php artisan migrate
 ```
-7. Access the web app via http://127.0.0.1:8000.
+8. Start laravel backend server.
+```
+  php artisan serve 
+```
+9. Start UI server in watch/hot-reloading mode.
+```
+  npm run watch
+```
+10. Access the web app via http://127.0.0.1:8000.
 
 ## Usage
 The web app works in two modes -
 
 **1. Guest Mode ( Only public rooms can be created / joined)**
 - Use room name in any format.
-- In public rooms, messages are published via server (client can't publish messages via echo).
+- In public rooms, messages are published via laravel server to ably (client can't publish messages directly through echo).
 
 **2. User Mode ( Private rooms can be created / joined)**
 - If user signed up and logged in into the Laravel app, it can create/join a private room.
 - The required room prefix is `room-<id>`, as defined in `routes/rooms.php`.
-- In private rooms, messages are published via Laravel Echo from client-side. 
+- In private rooms, messages are published through Laravel Echo from client-side. 
 
 ## Screenshots
 
