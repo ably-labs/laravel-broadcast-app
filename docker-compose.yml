@@ -15,3 +15,13 @@ services:
         - DB_DATABASE=/app/database/database.sqlite
     ports:
       - "8000:80"
+  npm:
+      build:
+          context: .
+          dockerfile: Dockerfile-npm
+      container_name: laravel-broadcast-app-npm
+      volumes:
+          - ./resources:/app/resources
+          - ./public:/app/public
+          - ./.env:/app/.env
+          - ./webpack.mix.js:/app/webpack.mix.js
