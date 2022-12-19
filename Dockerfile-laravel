@@ -2,9 +2,9 @@ FROM docker.io/bitnami/laravel:9
 
 ENV APP_DIR="/app"
 
-COPY . $APP_DIR
-
 WORKDIR $APP_DIR
+
+COPY . .
 
 RUN composer install
 RUN php artisan migrate:fresh --seed
