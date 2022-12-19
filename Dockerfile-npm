@@ -1,7 +1,6 @@
 FROM node:current-alpine
 
-ENV \
-  APP_DIR="/app"
+ENV APP_DIR="/app"
 
 WORKDIR $APP_DIR
 
@@ -9,5 +8,3 @@ COPY package.json .
 COPY package-lock.json .
 
 RUN npm install
-
-CMD npm run watch-poll
