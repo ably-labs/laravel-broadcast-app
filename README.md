@@ -53,6 +53,15 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 ```
 10. Access the web app via http://127.0.0.1:8000.
 
+## Setup using Docker
+
+1. Perform steps 1-6 as described in [Setup](#Setup), but skip the package installation in step 2.
+2. From the project directory, start up the application using Compose
+```
+docker-compose up
+```
+3. Access the web app via http://127.0.0.1:8000.
+
 ## Usage
 The web app works in two modes -
 
