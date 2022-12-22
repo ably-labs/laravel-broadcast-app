@@ -7,5 +7,7 @@ WORKDIR $APP_DIR
 COPY . .
 
 RUN composer install
+RUN php artisan key:generate
+RUN touch database/database.sqlite
 RUN php artisan migrate:fresh --seed
 
