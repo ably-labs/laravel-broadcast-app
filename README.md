@@ -14,6 +14,7 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 2. Node.js >= 14.x.x.
 
 ## Setup
+> Note - To quickly run the app without installing dependencies explicitly, check [Run Using Docker](#run-using-docker).
 
 1. Clone the repository.
 ```
@@ -53,14 +54,18 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 ```
 10. Access the web app via http://127.0.0.1:8000.
 
-## Setup using Docker
+## Run Using Docker
 
-1. Perform steps 1-6 as described in [Setup](#Setup), but skip the package installation in step 2.
-2. From the project directory, start up the application using Compose
+1. Clone the repo. and set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) as mentioned in step 3 and 4 of [SETUP](#setup).
+2. Start the app/docker-services using following command.
 ```
-docker-compose up
+   docker-compose up
 ```
 3. Access the web app via http://127.0.0.1:8000.
+4. To stop the app/docker-services, run following command in a new terminal.
+```
+   docker-compose down
+```
 
 ## Usage
 The web app works in two modes -
