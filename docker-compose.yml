@@ -3,8 +3,8 @@ services:
   laravel:
     build:
         context: .
-        dockerfile: Dockerfile-laravel
-    container_name: laravel-broadcast-app-php
+        dockerfile: Dockerfile-backend
+    container_name: build-and-serve-backend
     restart: always
     volumes:
         - ./app:/app/app
@@ -19,8 +19,8 @@ services:
   npm:
       build:
           context: .
-          dockerfile: Dockerfile-npm
-      container_name: laravel-broadcast-app-npm
+          dockerfile: Dockerfile-frontend
+      container_name: build-frontend-hot-reload
       volumes:
           - ./resources:/app/resources
           - ./public:/app/public
