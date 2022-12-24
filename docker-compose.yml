@@ -25,6 +25,5 @@ services:
       volumes:
           - ./resources:/app/resources
           - ./public:/app/public
-          - ./.env:/app/.env
           - ./webpack.mix.js:/app/webpack.mix.js
       entrypoint: npm run watch-poll
