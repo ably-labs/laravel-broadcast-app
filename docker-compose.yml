@@ -1,0 +1,29 @@
+version: '3'
+services:
+  backend:
+    build:
+        context: .
+        dockerfile: Dockerfile-backend
+    container_name: build-and-serve-backend
+    restart: always
+    volumes:
+        - ./app:/app/app
+        - ./public:/app/public
+        - ./.env:/app/.env
+    environment:
+        - DB_CONNECTION=sqlite
+        - DB_DATABASE=/app/database/database.sqlite
+    ports:
+      - "8000:80"
+    entrypoint: php artisan serve --host=0.0.0.0 --port=80
+  
+  frontend:
+      build:
+          context: .
+          dockerfile: Dockerfile-frontend
+      container_name: build-frontend-hot-reload
+      volumes:
+          - ./resources:/app/resources
+          - ./public:/app/public
+          - ./webpack.mix.js:/app/webpack.mix.js
+      entrypoint: npm run watch-poll
