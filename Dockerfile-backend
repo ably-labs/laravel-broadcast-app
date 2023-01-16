@@ -1,0 +1,13 @@
+FROM docker.io/bitnami/laravel:9
+
+ENV APP_DIR="/app"
+
+WORKDIR $APP_DIR
+
+COPY . .
+
+RUN composer install
+RUN php artisan key:generate
+RUN touch database/database.sqlite
+RUN php artisan migrate:fresh --seed
+
