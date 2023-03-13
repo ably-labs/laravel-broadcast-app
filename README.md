@@ -55,7 +55,7 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 
 ## Run Using Docker
 
-1. Clone the repo. and set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) as mentioned in step 3 and 4 of [SETUP](#setup).
+1. Clone the repo. and set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) as mentioned in step 2 and 3 of [SETUP](#setup).
 2. Start the app/docker-services using following command.
 ```
    docker-compose up
