@@ -20,14 +20,13 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 ```
   git clone https://github.com/ably-labs/laravel-broadcast-app
 ```
-2. Install dependencies.
+2. Create the `.env` file in the project root. Copy contents from `.env.example` into `.env`.
+3. Set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) in .env file .
+4. Install dependencies.
 ```
-  cd laravel-broadcast-app
   composer install
   npm install
 ```
-3. Create `.env` file at root. Copy contents from `.env.example` into `.env`.
-4. Set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) in .env file .
 ```
   ABLY_KEY=ROOT_API_KEY_COPIED_FROM_ABLY_WEB_DASHBOARD
 ```
@@ -56,7 +55,7 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 
 ## Run Using Docker
 
-1. Clone the repo. and set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) as mentioned in step 3 and 4 of [SETUP](#setup).
+1. Clone the repo. and set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) as mentioned in step 2 and 3 of [SETUP](#setup).
 2. Start the app/docker-services using following command.
 ```
    docker-compose up
