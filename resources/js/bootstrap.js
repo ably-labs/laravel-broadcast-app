@@ -21,9 +21,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  */
 import Echo from '@ably/laravel-echo';
 
-window.Ably = require('ably');
-
-// Create echo client instance around ably-js.
+// Create echo client instance around @ably/pubsub-device (bundled with @ably/laravel-echo).
 window.Echo = new Echo({
     broadcaster: 'ably',
 });
