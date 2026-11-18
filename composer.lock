@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ably/laravel-broadcaster.git",
-                "reference": "5af7752380635af28d0df7f59b83e7d0cdf5d98b"
+                "reference": "e86d99b3fc5d692a0fd154df94a3a1ddd57ef1ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ably/laravel-broadcaster/zipball/5af7752380635af28d0df7f59b83e7d0cdf5d98b",
-                "reference": "5af7752380635af28d0df7f59b83e7d0cdf5d98b",
+                "url": "https://api.github.com/repos/ably/laravel-broadcaster/zipball/e86d99b3fc5d692a0fd154df94a3a1ddd57ef1ae",
+                "reference": "e86d99b3fc5d692a0fd154df94a3a1ddd57ef1ae",
                 "shasum": ""
             },
             "require": {
@@ -75,7 +75,7 @@
                 "source": "https://github.com/ably/laravel-broadcaster/tree/feature/mau-guest-client-id",
                 "issues": "https://github.com/ably/laravel-broadcaster/issues"
             },
-            "time": "2026-11-06T10:03:45+00:00"
+            "time": "2026-11-17T11:09:37+00:00"
         },
         {
             "name": "ably/pubsub-server",
