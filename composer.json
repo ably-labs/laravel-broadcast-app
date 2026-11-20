@@ -4,9 +4,15 @@
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ably/laravel-broadcaster"
+        }
+    ],
     "require": {
         "php": "^7.3|^8.0",
-        "ably/laravel-broadcaster": "^1.0.2",
+        "ably/laravel-broadcaster": "dev-docs/readme-updating-1.1 as 1.1.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
