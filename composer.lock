@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99d4f45dbea4d149db3a0821dbc3df16",
+    "content-hash": "adb6187778e0427a35498b9f3964890c",
     "packages": [
         {
             "name": "ably/laravel-broadcaster",
@@ -1952,12 +1952,12 @@
             "version": "2.64.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/briannesbitt/Carbon.git",
+                "url": "https://github.com/CarbonPHP/carbon.git",
                 "reference": "889546413c97de2d05063b8cb7b193c2531ea211"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/889546413c97de2d05063b8cb7b193c2531ea211",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/889546413c97de2d05063b8cb7b193c2531ea211",
                 "reference": "889546413c97de2d05063b8cb7b193c2531ea211",
                 "shasum": ""
             },
@@ -5444,12 +5444,12 @@
             "version": "v5.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vlucas/phpdotenv.git",
+                "url": "https://github.com/phpdotenv/phpdotenv.git",
                 "reference": "1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
+                "url": "https://api.github.com/repos/phpdotenv/phpdotenv/zipball/1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
                 "reference": "1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
                 "shasum": ""
             },
@@ -7942,7 +7942,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3|^8.0"
+        "php": "^8.1"
     },
     "platform-dev": {},
     "plugin-api-version": "2.11.0"
