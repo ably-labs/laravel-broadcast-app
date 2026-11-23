@@ -44,7 +44,9 @@ return [
             'driver' => 'ably',
             'key' => env('ABLY_KEY'),
             'disable_public_channels' => env('ABLY_DISABLE_PUBLIC_CHANNELS', false),
-            'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600)
+            'token_expiry' => env('ABLY_TOKEN_EXPIRY', 3600),
+            'mau_account' => env('ABLY_MAU_ACCOUNT', false),
+            'guest_id_prefix' => env('ABLY_GUEST_ID_PREFIX', 'guest:'),
         ],
 
         'redis' => [
