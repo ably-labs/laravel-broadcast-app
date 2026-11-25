@@ -10,7 +10,7 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 * Join multiple rooms simultaneously.
 
 ## Requirements
-1. PHP version >= 8.1.
+1. PHP 8.2. PHP 8.3 and later are not supported, because the locked Laravel 8 dependencies (`nette/schema`, `nette/utils`) require PHP below 8.3.
 2. Node.js >= 22.
 
 ## Setup
