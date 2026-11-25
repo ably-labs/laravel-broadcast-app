@@ -10,8 +10,8 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 * Join multiple rooms simultaneously.
 
 ## Requirements
-1. PHP version >= 7.3.
-2. Node.js >= 14.x.x.
+1. PHP 8.2. PHP 8.3 and later are not supported, because the locked Laravel 8 dependencies (`nette/schema`, `nette/utils`) require PHP below 8.3.
+2. Node.js >= 22.
 
 ## Setup
 > Note - To quickly run the app without installing dependencies explicitly, check [Run Using Docker](#run-using-docker).
@@ -24,6 +24,10 @@ Demo web-chat app using Ably Broadcaster+Echo based on laravel.
 3. Set [ABLY_KEY](https://faqs.ably.com/setting-up-and-managing-api-keys) in .env file .
 ```
   ABLY_KEY=ROOT_API_KEY_COPIED_FROM_ABLY_WEB_DASHBOARD
+```
+   On an Ably account billed by monthly active users (MAU), also set `ABLY_MAU_ACCOUNT=true`, so guests get a guest client ID. Otherwise guest connections fail with error 40161.
+```
+  ABLY_MAU_ACCOUNT=true
 ```
 4. Install dependencies.
 ```
